@@ -1,0 +1,30 @@
+# Локальные файлы (пути к SDK)
+local.properties
+
+# Скомпилированные файлы
+*.apk
+*.aab
+*.dex
+*.class
+build/
+release/
+
+# Gradle
+.gradle/
+gradle-app.setting
+!gradle-wrapper.jar
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Ключи подписи (никогда не коммитим!)
+*.jks
+*.keystore
+*.keystore.bak
+
+# Системные файлы
+.DS_Store
+Thumbs.db
