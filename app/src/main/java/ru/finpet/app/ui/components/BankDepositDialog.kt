@@ -180,18 +180,6 @@ fun BankDepositDialog(
                                         color = TextPrimary
                                     )
                                 }
-                                Surface(
-                                    shape = RoundedCornerShape(8.dp),
-                                    color = StatGreenEmerald.copy(alpha = 0.15f)
-                                ) {
-                                    Text(
-                                        text = "+20% / период",
-                                        fontSize = 11.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = StatGreenEmerald,
-                                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
-                                    )
-                                }
                             }
 
                             HorizontalDivider(color = OutlineLight.copy(alpha = 0.5f))

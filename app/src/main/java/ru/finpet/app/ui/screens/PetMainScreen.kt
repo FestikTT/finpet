@@ -568,20 +568,6 @@ fun PetMainScreen(
                                 fontWeight = FontWeight.Bold,
                                 color = currentTheme.primaryColor
                             )
-                            if (state.isDailyLimitReached) {
-                                Surface(
-                                    shape = RoundedCornerShape(6.dp),
-                                    color = StatGreenEmerald.copy(alpha = 0.15f)
-                                ) {
-                                    Text(
-                                        text = "3/3 ✓",
-                                        fontSize = 10.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = StatGreenEmerald,
-                                        modifier = Modifier.padding(horizontal = 5.dp, vertical = 1.dp)
-                                    )
-                                }
-                            }
                             if (state.questStreakDays > 0) {
                                 Surface(
                                     shape = RoundedCornerShape(6.dp),

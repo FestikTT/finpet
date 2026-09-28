@@ -1,49 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
+
+    <!-- Ушки -->
     <path
-        android:fillColor="#4F46E5"
-        android:pathData="M0,0h108v108h-108z" />
-    <!-- Мордочкa -->
+        android:fillColor="#E87A2A"
+        android:pathData="M32,42 L28,24 L42,32 Z" />
     <path
-        android:fillColor="#FF8C00"
-        android:pathData="M54,26 C36,26 24,40 24,58 C24,74 38,86 54,86 C70,86 84,74 84,58 C84,40 72,26 54,26 Z" />
-    <!-- Левое ушко -->
+        android:fillColor="#E87A2A"
+        android:pathData="M76,42 L80,24 L66,32 Z" />
+
+    <!-- Внутренняя часть ушек -->
     <path
-        android:fillColor="#FF8C00"
-        android:pathData="M30,42 L24,20 L44,32 Z" />
+        android:fillColor="#FFB88A"
+        android:pathData="M34,40 L32,28 L40,34 Z" />
     <path
-        android:fillColor="#FFE0B2"
-        android:pathData="M31,39 L27,24 L41,33 Z" />
-    <!-- Правое ушко -->
+        android:fillColor="#FFB88A"
+        android:pathData="M74,40 L76,28 L68,34 Z" />
+
+    <!-- Голова (оранжевый овал) -->
     <path
-        android:fillColor="#FF8C00"
-        android:pathData="M78,42 L84,20 L64,32 Z" />
+        android:fillColor="#F58C3A"
+        android:pathData="M54,30 C40,30 30,40 30,52 C30,64 40,74 54,74 C68,74 78,64 78,52 C78,40 68,30 54,30 Z" />
+
+    <!-- Белая мордочка -->
     <path
-        android:fillColor="#FFE0B2"
-        android:pathData="M77,39 L81,24 L67,33 Z" />
-    <!-- Манишка -->
+        android:fillColor="#FFF5E1"
+        android:pathData="M54,50 C44,50 38,56 38,62 C38,68 44,72 54,72 C64,72 70,68 70,62 C70,56 64,50 54,50 Z" />
+
+    <!-- Глаза -->
     <path
-        android:fillColor="#FFE0B2"
-        android:pathData="M42,56 C42,56 46,74 54,74 C62,74 66,56 66,56 Z" />
-    <!-- Глазки -->
+        android:fillColor="#2C1810"
+        android:pathData="M44,54 m-2.5,0 a2.5,2.5 0 1,0 5,0 a2.5,2.5 0 1,0 -5,0" />
     <path
-        android:fillColor="#1E293B"
-        android:pathData="M42,50 a4,4 0 1,0 0.1,0 Z" />
+        android:fillColor="#2C1810"
+        android:pathData="M64,54 m-2.5,0 a2.5,2.5 0 1,0 5,0 a2.5,2.5 0 1,0 -5,0" />
+
+    <!-- Блики в глазах -->
     <path
-        android:fillColor="#1E293B"
-        android:pathData="M66,50 a4,4 0 1,0 0.1,0 Z" />
-    <!-- Носик -->
+        android:fillColor="#FFFFFF"
+        android:pathData="M43,53 m-1,0 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0" />
     <path
-        android:fillColor="#1E293B"
-        android:pathData="M54,58 a3,3 0 1,0 0.1,0 Z" />
-    <!-- Монетка на иконке -->
+        android:fillColor="#FFFFFF"
+        android:pathData="M63,53 m-1,0 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0" />
+
+    <!-- Нос -->
     <path
-        android:fillColor="#F59E0B"
-        android:pathData="M76,68 a12,12 0 1,0 0.1,0 Z" />
+        android:fillColor="#2C1810"
+        android:pathData="M54,60 m-2,0 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0" />
+
+    <!-- Улыбка -->
     <path
-        android:fillColor="#FEF3C7"
-        android:pathData="M76,68 a9,9 0 1,0 0.1,0 Z" />
+        android:strokeColor="#2C1810"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M50,64 Q54,67 58,64" />
+
+    <!-- Щёчки (румянец) -->
+    <path
+        android:fillColor="#FF9B7A"
+        android:fillAlpha="0.5"
+        android:pathData="M40,60 m-3,0 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0" />
+    <path
+        android:fillColor="#FF9B7A"
+        android:fillAlpha="0.5"
+        android:pathData="M68,60 m-3,0 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0" />
+
+    <!-- Лапки -->
+    <path
+        android:fillColor="#F58C3A"
+        android:pathData="M42,78 m-6,0 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0" />
+    <path
+        android:fillColor="#F58C3A"
+        android:pathData="M66,78 m-6,0 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0" />
+
+    <!-- Монетка (золотой круг) -->
+    <path
+        android:fillColor="#FFD54F"
+        android:pathData="M54,78 m-10,0 a10,10 0 1,0 20,0 a10,10 0 1,0 -20,0" />
+
+    <!-- Блик на монетке -->
+    <path
+        android:fillColor="#FFF176"
+        android:pathData="M50,74 m-3,0 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0" />
+
+    <!-- Символ ₽ на монетке -->
+    <path
+        android:strokeColor="#F57F17"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M51,76 L51,82 M51,78 L56,78" />
+    <path
+        android:strokeColor="#F57F17"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M53,74 C55,74 56,75 56,77 C56,79 54,79 52,79" />
+
 </vector>

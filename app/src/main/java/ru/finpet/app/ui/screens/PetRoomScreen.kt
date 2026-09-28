@@ -62,7 +62,7 @@ fun PetRoomScreen(
                 title = {
                     Column {
                         Text(
-                            text = "Комната ${pet.name.ifBlank { "питомца" }}",
+                            text = "Комната",
                             fontFamily = UnboundedFamily,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
@@ -96,16 +96,6 @@ fun PetRoomScreen(
                             text = if (state.isMusicEnabled) "🎵" else "🔇",
                             fontSize = 18.sp
                         )
-                    }
-
-                    // Кнопка фотоальбома воспоминаний
-                    IconButton(
-                        onClick = {
-                            SoundHapticManager.performClickHaptic()
-                            showMemoryAlbum = true
-                        }
-                    ) {
-                        Text("📸", fontSize = 18.sp)
                     }
 
                     // Кнопка банковского сейфа
@@ -226,31 +216,6 @@ fun PetRoomScreen(
                         Text(state.roomWeather.icon, fontSize = 14.sp)
                         Text(
                             text = state.roomWeather.title,
-                            fontSize = 11.5.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = TextPrimary
-                        )
-                    }
-                }
-
-                // Фотоальбом воспоминаний
-                Surface(
-                    shape = RoundedCornerShape(12.dp),
-                    color = SurfaceLight,
-                    border = BorderStroke(1.dp, OutlineLight),
-                    modifier = Modifier.bounceClick {
-                        SoundHapticManager.performClickHaptic()
-                        showMemoryAlbum = true
-                    }
-                ) {
-                    Row(
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 7.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(6.dp)
-                    ) {
-                        Text("📸", fontSize = 14.sp)
-                        Text(
-                            text = "Фотоальбом",
                             fontSize = 11.5.sp,
                             fontWeight = FontWeight.Bold,
                             color = TextPrimary
