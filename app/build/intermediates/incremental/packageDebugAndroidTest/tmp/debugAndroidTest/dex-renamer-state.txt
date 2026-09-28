@@ -1,0 +1,7 @@
+#Sat Sep 19 12:16:49 MSK 2026
+base.0=C\:\\Users\\festik\\.gemini\\antigravity\\scratch\\finpetrustore\\app\\build\\intermediates\\dex\\debugAndroidTest\\mergeExtDexDebugAndroidTest\\classes.dex
+base.1=C\:\\Users\\festik\\.gemini\\antigravity\\scratch\\finpetrustore\\app\\build\\intermediates\\dex\\debugAndroidTest\\mergeProjectDexDebugAndroidTest\\0\\classes.dex
+path.0=classes.dex
+path.1=0/classes.dex
+renamed.0=classes.dex
+renamed.1=classes2.dex

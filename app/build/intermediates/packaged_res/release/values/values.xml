@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_description">Обучающая интерактивная финансовая игра-тамагочи для детей и подростков</string>
+    <string name="app_name">ФинПет</string>
+    <string name="app_name_full">ФинПет: Финансовый питомец</string>
+    <string name="widget_description">Виджет питомца с балансом и сытостью</string>
+    <style name="Theme.FinPet" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+</resources>

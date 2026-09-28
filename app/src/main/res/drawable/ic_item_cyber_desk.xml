@@ -1,0 +1,19 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+    <!-- Тень -->
+    <path android:fillColor="#2200D2FF" android:pathData="M6,56 C6,53 58,53 58,56 C58,58 6,58 6,56 Z"/>
+    <!-- Z-образные кибер-ножки -->
+    <path android:fillColor="#212121" android:strokeColor="#00E5FF" android:strokeWidth="1.5" android:pathData="M12,28 L8,52 L16,52 L18,34 L22,34 Z"/>
+    <path android:fillColor="#212121" android:strokeColor="#00E5FF" android:strokeWidth="1.5" android:pathData="M52,28 L56,52 L48,52 L46,34 L42,34 Z"/>
+    <!-- Столешница карбон -->
+    <path android:fillColor="#263238" android:strokeColor="#00E5FF" android:strokeWidth="1.8" android:strokeLineJoin="round" android:pathData="M5,22 L59,22 L56,28 L8,28 Z"/>
+    <!-- RGB подсветка полосы -->
+    <path android:fillColor="#FF0055" android:pathData="M8,26 L56,26 L55,28 L9,28 Z"/>
+    <!-- Монитор на стойке -->
+    <path android:fillColor="#37474F" android:strokeColor="#00E5FF" android:strokeWidth="1.2" android:pathData="M16,8 L48,8 L48,19 L16,19 Z"/>
+    <path android:fillColor="#18FFFF" android:pathData="M18,10 L46,10 L46,17 L18,17 Z"/>
+    <path android:fillColor="#455A64" android:pathData="M30,19 L34,19 L35,22 L29,22 Z"/>
+</vector>

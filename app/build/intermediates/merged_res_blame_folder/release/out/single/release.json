@@ -1,0 +1,146 @@
+[
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_ic_item_brush.xml.flat",
+        "source": "ru.finpet.app-main-5:/drawable/ic_item_brush.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_ic_item_wardrobe.xml.flat",
+        "source": "ru.finpet.app-main-5:/drawable/ic_item_wardrobe.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_ic_target.xml.flat",
+        "source": "ru.finpet.app-main-5:/drawable/ic_target.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_ic_piggy_bank.xml.flat",
+        "source": "ru.finpet.app-main-5:/drawable/ic_piggy_bank.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_ic_item_carrot.xml.flat",
+        "source": "ru.finpet.app-main-5:/drawable/ic_item_carrot.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_pet_panda_3d.jpg.flat",
+        "source": "ru.finpet.app-main-5:/drawable/pet_panda_3d.jpg"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_ic_tip.xml.flat",
+        "source": "ru.finpet.app-main-5:/drawable/ic_tip.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_ic_fire.xml.flat",
+        "source": "ru.finpet.app-main-5:/drawable/ic_fire.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/font_montserrat_bold.ttf.flat",
+        "source": "ru.finpet.app-main-5:/font/montserrat_bold.ttf"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_ic_item_lamp.xml.flat",
+        "source": "ru.finpet.app-main-5:/drawable/ic_item_lamp.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/layout_widget_finpet.xml.flat",
+        "source": "ru.finpet.app-main-5:/layout/widget_finpet.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_ic_finpet_launcher.xml.flat",
+        "source": "ru.finpet.app-main-5:/drawable/ic_finpet_launcher.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_pet_cat_3d.jpg.flat",
+        "source": "ru.finpet.app-main-5:/drawable/pet_cat_3d.jpg"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/font_onest.ttf.flat",
+        "source": "ru.finpet.app-main-5:/font/onest.ttf"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_ic_wallet.xml.flat",
+        "source": "ru.finpet.app-main-5:/drawable/ic_wallet.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_ic_shield_check.xml.flat",
+        "source": "ru.finpet.app-main-5:/drawable/ic_shield_check.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/font_unbounded.ttf.flat",
+        "source": "ru.finpet.app-main-5:/font/unbounded.ttf"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/xml_finpet_widget_info.xml.flat",
+        "source": "ru.finpet.app-main-5:/xml/finpet_widget_info.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_bg_widget_badge.xml.flat",
+        "source": "ru.finpet.app-main-5:/drawable/bg_widget_badge.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_ic_cart.xml.flat",
+        "source": "ru.finpet.app-main-5:/drawable/ic_cart.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_ic_item_fish.xml.flat",
+        "source": "ru.finpet.app-main-5:/drawable/ic_item_fish.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_ic_item_shelf.xml.flat",
+        "source": "ru.finpet.app-main-5:/drawable/ic_item_shelf.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/font_montserrat_extrabold.ttf.flat",
+        "source": "ru.finpet.app-main-5:/font/montserrat_extrabold.ttf"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_bg_widget_card.xml.flat",
+        "source": "ru.finpet.app-main-5:/drawable/bg_widget_card.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_ic_coin_vector.xml.flat",
+        "source": "ru.finpet.app-main-5:/drawable/ic_coin_vector.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/font_montserrat_medium.ttf.flat",
+        "source": "ru.finpet.app-main-5:/font/montserrat_medium.ttf"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_ic_gift.xml.flat",
+        "source": "ru.finpet.app-main-5:/drawable/ic_gift.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_ic_item_bed.xml.flat",
+        "source": "ru.finpet.app-main-5:/drawable/ic_item_bed.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_pet_fox_3d.jpg.flat",
+        "source": "ru.finpet.app-main-5:/drawable/pet_fox_3d.jpg"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_ic_item_desk.xml.flat",
+        "source": "ru.finpet.app-main-5:/drawable/ic_item_desk.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_ic_item_tea_table.xml.flat",
+        "source": "ru.finpet.app-main-5:/drawable/ic_item_tea_table.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/font_montserrat_regular.ttf.flat",
+        "source": "ru.finpet.app-main-5:/font/montserrat_regular.ttf"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_ic_item_soap.xml.flat",
+        "source": "ru.finpet.app-main-5:/drawable/ic_item_soap.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/font_montserrat_semibold.ttf.flat",
+        "source": "ru.finpet.app-main-5:/font/montserrat_semibold.ttf"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_ic_sparkle.xml.flat",
+        "source": "ru.finpet.app-main-5:/drawable/ic_sparkle.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_ic_item_cyber_desk.xml.flat",
+        "source": "ru.finpet.app-main-5:/drawable/ic_item_cyber_desk.xml"
+    }
+]

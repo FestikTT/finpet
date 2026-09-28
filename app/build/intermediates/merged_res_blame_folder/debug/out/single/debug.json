@@ -1,0 +1,154 @@
+[
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_ic_item_soap.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\ic_item_soap.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\xml_finpet_widget_info.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\xml\\finpet_widget_info.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_ic_finpet_launcher.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\ic_finpet_launcher.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_ic_item_wardrobe.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\ic_item_wardrobe.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_ic_item_shelf.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\ic_item_shelf.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_ic_cart.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\ic_cart.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_ic_item_tea_table.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\ic_item_tea_table.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_ic_piggy_bank.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\ic_piggy_bank.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_ic_tip.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\ic_tip.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_ic_fire.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\ic_fire.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_pet_cat_3d.jpg.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\pet_cat_3d.jpg"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_ic_gift.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\ic_gift.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\layout_widget_finpet.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\layout\\widget_finpet.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_ic_item_lamp.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\ic_item_lamp.xml"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/layout_widget_finpet.xml.flat",
+        "source": "ru.finpet.app-main-6:/layout/widget_finpet.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\font_montserrat_medium.ttf.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\font\\montserrat_medium.ttf"
+    },
+    {
+        "merged": "ru.finpet.app-merged_res-4:/drawable_ic_finpet_launcher.xml.flat",
+        "source": "ru.finpet.app-main-6:/drawable/ic_finpet_launcher.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\font_montserrat_regular.ttf.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\font\\montserrat_regular.ttf"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_ic_target.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\ic_target.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_bg_widget_badge.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\bg_widget_badge.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_ic_item_cyber_desk.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\ic_item_cyber_desk.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_ic_shield_check.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\ic_shield_check.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_ic_item_desk.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\ic_item_desk.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_ic_item_brush.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\ic_item_brush.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_ic_wallet.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\ic_wallet.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_pet_panda_3d.jpg.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\pet_panda_3d.jpg"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_ic_coin_vector.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\ic_coin_vector.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_pet_fox_3d.jpg.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\pet_fox_3d.jpg"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\font_montserrat_semibold.ttf.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\font\\montserrat_semibold.ttf"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\font_montserrat_bold.ttf.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\font\\montserrat_bold.ttf"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_ic_item_carrot.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\ic_item_carrot.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_ic_item_bed.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\ic_item_bed.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_bg_widget_card.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\bg_widget_card.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\font_montserrat_extrabold.ttf.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\font\\montserrat_extrabold.ttf"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\font_unbounded.ttf.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\font\\unbounded.ttf"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_ic_sparkle.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\ic_sparkle.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\drawable_ic_item_fish.xml.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\drawable\\ic_item_fish.xml"
+    },
+    {
+        "merged": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-merged_res-4:\\font_onest.ttf.flat",
+        "source": "C:\\Users\\festik\\.gradle\\daemon\\8.6\\ru.finpet.app-main-6:\\font\\onest.ttf"
+    }
+]

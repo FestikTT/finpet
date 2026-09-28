@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">ФинПет</string>
+    <string name="app_name_full">ФинПет: Финансовый питомец</string>
+    <string name="app_description">Обучающая интерактивная финансовая игра-тамагочи для детей и подростков</string>
+    <string name="widget_description">Виджет питомца с балансом и сытостью</string>
+</resources>
