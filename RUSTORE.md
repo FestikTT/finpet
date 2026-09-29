@@ -49,11 +49,3 @@
 * Нет азартных игр и реальных платежей.
 
 ---
-
-### Скриншоты
-1. `docs/screenshots/1_room.png` — Комната питомца и стена наград
-2. `docs/screenshots/2_budget.png` — Бюджет 50/30/20 и банки
-3. `docs/screenshots/3_quests.png` — Карта квестов
-4. `docs/screenshots/4_shop.png` — Магазин с примеркой
-5. `docs/screenshots/5_lab.png` — Калькуляторы и фин-лаб
-6. `docs/screenshots/6_parent.png` — Раздел для родителей
