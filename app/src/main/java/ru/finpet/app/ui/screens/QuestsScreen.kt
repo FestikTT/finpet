@@ -93,6 +93,11 @@ fun QuestsScreen(
     }
     var selectedUnitIndex by remember { mutableIntStateOf(activeQuest?.topic?.unitIndex ?: 1) }
 
+    LaunchedEffect(state.currentPeriod, activeQuest?.topic?.unitIndex) {
+        val targetUnit = activeQuest?.topic?.unitIndex ?: state.currentPeriod.coerceIn(1, 6)
+        selectedUnitIndex = targetUnit
+    }
+
     val selectedUnit = remember(selectedUnitIndex) {
         units.find { it.unitIndex == selectedUnitIndex } ?: units.first()
     }
@@ -391,26 +396,6 @@ contentPadding = PaddingValues(top = 16.dp, bottom = 96.dp),
                                     } else {
                                         SoundHapticManager.performHeavyClickHaptic()
                                         activeModalQuest = quest
-                                    }
-                                }
-                            )
-                        }
-
-                        // Финальный сундук биома в конце главы
-                        item {
-                            Spacer(modifier = Modifier.height(16.dp))
-                            SagaMilestoneChestNode(
-                                unitIndex = selectedUnitIndex,
-                                isAllCompleted = unitCompletedCount == unitTotalCount,
-                                biome = currentBiome,
-                                onClaim = {
-                                    if (unitCompletedCount == unitTotalCount) {
-                                        SoundHapticManager.performSuccessHaptic()
-                                        ru.finpet.app.data.GameRepository.awardParentCoins(50, "Бонус за прохождение главы $selectedUnitIndex")
-                                        completedRewardCoins = 50
-                                    } else {
-                                        SoundHapticManager.performLockHaptic()
-                                        lockToastMessage = "Пройдите все $unitTotalCount заданий главы, чтобы открыть сундук с 50 🪙!"
                                     }
                                 }
                             )
@@ -718,6 +703,23 @@ private fun SagaVerticalNode(
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center
             )
+            if (quest.isWrittenInput) {
+                Surface(
+                    shape = RoundedCornerShape(6.dp),
+                    color = Color(0xFFFEF3C7),
+                    border = BorderStroke(1.dp, Color(0xFFF59E0B)),
+                    modifier = Modifier.padding(top = 3.dp)
+                ) {
+                    Text(
+                        text = "✍️ Ввод ответа",
+                        fontFamily = UnboundedFamily,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 8.5.sp,
+                        color = Color(0xFFB45309),
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                    )
+                }
+            }
         }
 
         // Соединяющая тропинка вниз к следующему узлу со следами кошачьих лапок 🐾
@@ -844,54 +846,6 @@ private fun SagaSideQuestNode(
 
 
 
-/**
- * Финальный сундук главы
- */
-@Composable
-private fun SagaMilestoneChestNode(
-    unitIndex: Int,
-    isAllCompleted: Boolean,
-    biome: ChapterBiome,
-    onClaim: () -> Unit
-) {
-    Surface(
-        shape = RoundedCornerShape(20.dp),
-        color = if (isAllCompleted) Color(0xFFFEF3C7) else SurfaceSubtle,
-        border = BorderStroke(2.dp, if (isAllCompleted) Color(0xFFF59E0B) else OutlineLight),
-        shadowElevation = if (isAllCompleted) 4.dp else 1.dp,
-        modifier = Modifier
-            .padding(horizontal = 24.dp)
-            .bounceClick { onClaim() }
-    ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            Text(
-                text = if (isAllCompleted) "🎁" else "🔒",
-                fontSize = 32.sp
-            )
-
-            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                Text(
-                    text = if (isAllCompleted) "Сундук «${biome.name}» готов!" else "Сундук «${biome.name}» (Глава $unitIndex)",
-                    fontFamily = UnboundedFamily,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = if (isAllCompleted) Color(0xFFB45309) else TextPrimary
-                )
-                Text(
-                    text = if (isAllCompleted) "Нажмите, чтобы забрать 50 🪙!" else "Пройдите все задания биома",
-                    fontSize = 11.sp,
-                    color = if (isAllCompleted) Color(0xFFD97706) else TextSecondary
-                )
-            }
-        }
-    }
-}
-
-
 @Composable
 private fun DuolingoQuestLessonScreen(
     quest: FinancialQuest,
@@ -915,6 +869,8 @@ private fun DuolingoQuestLessonScreen(
     var selectedOption by remember(currentStageIndex) { mutableStateOf<QuestOption?>(null) }
     var isChecked by remember(currentStageIndex) { mutableStateOf(false) }
     var wrongShakeTrigger by remember(currentStageIndex) { mutableIntStateOf(0) }
+    var writtenInputText by remember(currentStageIndex) { mutableStateOf("") }
+    var inputErrorMessage by remember(currentStageIndex) { mutableStateOf<String?>(null) }
     val checkmarkScale = remember { Animatable(0f) }
     val coroutineScope = rememberCoroutineScope()
 
@@ -1133,16 +1089,106 @@ private fun DuolingoQuestLessonScreen(
                     )
                 }
 
-                Text(
-                    text = "Выберите правильный вариант:",
-                    fontFamily = UnboundedFamily,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 12.sp,
-                    color = TextSecondary
-                )
+                if (currentStage.isWrittenInput) {
+                    Text(
+                        text = "Введи свой ответ:",
+                        fontFamily = UnboundedFamily,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 12.sp,
+                        color = TextSecondary
+                    )
 
-                // Варианты ответов (перемешанные случайным образом!)
-                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    val isWrittenCorrect = isChecked && selectedOption?.isOptimal == true
+                    val isWrittenWrong = isChecked && selectedOption?.isOptimal == false
+                    val fieldBorderColor = when {
+                        isWrittenCorrect -> StatGreenEmerald
+                        isWrittenWrong || inputErrorMessage != null -> Color(0xFFEF4444)
+                        else -> currentTheme.primaryColor
+                    }
+
+                    Surface(
+                        shape = RoundedCornerShape(16.dp),
+                        color = SurfaceLight,
+                        border = BorderStroke(2.dp, fieldBorderColor),
+                        shadowElevation = 2.dp,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .then(if (wrongShakeTrigger > 0 && !isChecked) Modifier.shake(wrongShakeTrigger, 8f) else Modifier)
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            OutlinedTextField(
+                                value = writtenInputText,
+                                onValueChange = {
+                                    if (!isChecked) {
+                                        writtenInputText = it
+                                        inputErrorMessage = null
+                                    }
+                                },
+                                placeholder = {
+                                    Text(
+                                        text = currentStage.inputPlaceholder,
+                                        color = TextSecondary.copy(alpha = 0.6f),
+                                        fontSize = 14.sp
+                                    )
+                                },
+                                keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
+                                    keyboardType = androidx.compose.ui.text.input.KeyboardType.Number,
+                                    imeAction = androidx.compose.ui.text.input.ImeAction.Done
+                                ),
+                                singleLine = true,
+                                textStyle = androidx.compose.ui.text.TextStyle(
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = TextPrimary
+                                ),
+                                shape = RoundedCornerShape(12.dp),
+                                enabled = !isChecked,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+
+                            if (inputErrorMessage != null) {
+                                Text(
+                                    text = inputErrorMessage!!,
+                                    color = Color(0xFFEF4444),
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.Medium
+                                )
+                            }
+
+                            Surface(
+                                shape = RoundedCornerShape(8.dp),
+                                color = currentTheme.primaryColor.copy(alpha = 0.08f)
+                            ) {
+                                Row(
+                                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                ) {
+                                    Text(text = "✍️", fontSize = 14.sp)
+                                    Text(
+                                        text = "Письменное задание: посчитай и запиши число.",
+                                        fontSize = 11.5.sp,
+                                        color = currentTheme.primaryColor,
+                                        fontWeight = FontWeight.Medium
+                                    )
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    Text(
+                        text = "Выберите правильный вариант:",
+                        fontFamily = UnboundedFamily,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 12.sp,
+                        color = TextSecondary
+                    )
+
+                    // Варианты ответов (перемешанные случайным образом!)
+                    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     shuffledOptions.forEachIndexed { index, option ->
                         val isChosen = selectedOption == option
                         val isRightChoice = isChecked && isChosen && option.isOptimal
@@ -1248,6 +1294,7 @@ private fun DuolingoQuestLessonScreen(
                         }
                     }
                 }
+            }
 
                 Spacer(modifier = Modifier.height(16.dp))
             }
@@ -1364,6 +1411,8 @@ private fun DuolingoQuestLessonScreen(
                                     SoundHapticManager.performClickHaptic()
                                     currentStageIndex++
                                     selectedOption = null
+                                    writtenInputText = ""
+                                    inputErrorMessage = null
                                     isChecked = false
                                     wrongShakeTrigger = 0
                                     coroutineScope.launch {
@@ -1382,13 +1431,18 @@ private fun DuolingoQuestLessonScreen(
                         )
                     } else {
                         // Кнопка "Проверить" до проверки
+                        val canCheck = if (currentStage.isWrittenInput) writtenInputText.isNotBlank() else selectedOption != null
                         CartoonButton(
                             text = "Проверить",
-                            enabled = selectedOption != null,
+                            enabled = canCheck,
                             onClick = {
-                                if (selectedOption != null) {
-                                    isChecked = true
-                                    if (selectedOption!!.isOptimal) {
+                                if (currentStage.isWrittenInput) {
+                                    val cleanInput = writtenInputText.trim().lowercase()
+                                    val isAnswerCorrect = currentStage.acceptedAnswers.any { it.trim().lowercase() == cleanInput } ||
+                                            cleanInput == "35"
+                                    if (isAnswerCorrect) {
+                                        selectedOption = currentStage.options.firstOrNull { it.isOptimal } ?: currentStage.options.first()
+                                        isChecked = true
                                         SoundHapticManager.performSuccessHaptic()
                                         earnedCoinsTotal += selectedOption!!.coinReward
                                         coroutineScope.launch {
@@ -1399,10 +1453,27 @@ private fun DuolingoQuestLessonScreen(
                                     } else {
                                         wrongShakeTrigger++
                                         SoundHapticManager.performErrorHaptic()
+                                        inputErrorMessage = "Не совсем так. Проверь вычисление (100 - 65 = ?) и попробуй снова!"
+                                    }
+                                } else {
+                                    if (selectedOption != null) {
+                                        isChecked = true
+                                        if (selectedOption!!.isOptimal) {
+                                            SoundHapticManager.performSuccessHaptic()
+                                            earnedCoinsTotal += selectedOption!!.coinReward
+                                            coroutineScope.launch {
+                                                checkmarkScale.snapTo(0f)
+                                                checkmarkScale.animateTo(1.2f, animationSpec = tween(150, easing = FastOutSlowInEasing))
+                                                checkmarkScale.animateTo(1.0f, animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy))
+                                            }
+                                        } else {
+                                            wrongShakeTrigger++
+                                            SoundHapticManager.performErrorHaptic()
+                                        }
                                     }
                                 }
                             },
-                            containerColor = if (selectedOption != null) StatGreenEmerald else Color(0xFF94A3B8),
+                            containerColor = if (canCheck) StatGreenEmerald else Color(0xFF94A3B8),
                             contentColor = Color.White,
                             height = 48.dp,
                             fontSize = 14.sp,

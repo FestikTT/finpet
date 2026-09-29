@@ -60,7 +60,10 @@ data class QuestStage(
     val senderName: String? = null,
     val senderAvatar: String? = null,
     val messageText: String? = null,
-    val redFlags: List<String> = emptyList()
+    val redFlags: List<String> = emptyList(),
+    val isWrittenInput: Boolean = false,
+    val inputPlaceholder: String = "Введи число...",
+    val acceptedAnswers: List<String> = emptyList()
 )
 
 data class QuestOption(
@@ -82,7 +85,8 @@ data class FinancialQuest(
     val periodRequired: Int = 1,
     val isCompleted: Boolean = false,
     val selectedOptionIndex: Int? = null,
-    val stages: List<QuestStage> = emptyList()
+    val stages: List<QuestStage> = emptyList(),
+    val isWrittenInput: Boolean = false
 ) {
     val allStages: List<QuestStage>
         get() = if (stages.isNotEmpty()) {
@@ -93,7 +97,8 @@ data class FinancialQuest(
                     stageType = StageType.DILEMMA,
                     title = title,
                     promptText = dilemmaText,
-                    options = options
+                    options = options,
+                    isWrittenInput = isWrittenInput
                 )
             )
         }

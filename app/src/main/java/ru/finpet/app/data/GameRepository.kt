@@ -1,10 +1,16 @@
 package ru.finpet.app.data
 
 import android.content.Context
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import ru.finpet.app.data.db.FinPetDatabase
 import ru.finpet.app.model.*
 import ru.finpet.app.util.FormatUtils
@@ -15,6 +21,8 @@ object GameRepository {
 
     private var db: FinPetDatabase? = null
     private var appContext: Context? = null
+    private val repositoryScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+    private var energyGameLoopJob: Job? = null
 
     private val _gameState = MutableStateFlow(createInitialState())
     val gameState: StateFlow<GameState> = _gameState.asStateFlow()
@@ -25,6 +33,61 @@ object GameRepository {
             db = FinPetDatabase(context.applicationContext)
             loadFromDatabase()
         }
+        startEnergyGameLoop()
+    }
+
+    private fun startEnergyGameLoop() {
+        if (energyGameLoopJob?.isActive == true) return
+        energyGameLoopJob = repositoryScope.launch {
+            while (true) {
+                delay(60_000L) // 1 минута игрового времени
+                updateEnergyTick()
+            }
+        }
+    }
+
+    private fun updateEnergyTick() {
+        _gameState.update { s ->
+            val curPet = s.pet
+            // Самая дешевая еда в магазине (например, сочное яблоко за 10 монет)
+            val minFoodPrice = s.shopItems
+                .filter { it.category == ShopCategory.FOOD }
+                .minOfOrNull { it.price } ?: 10
+
+            val cannotAffordFood = s.totalCoins < minFoodPrice
+
+            if (cannotAffordFood) {
+                // Если деньги у игрока закончились и еду купить не может:
+                // восстанавливаем +5% энергии за минуту игры.
+                // Текстом никуда не пишем!
+                val newEnergy = (curPet.energy + 0.05f).coerceAtMost(1.0f)
+                val updatedMood = if (curPet.currentMood == PetMood.TIRED && newEnergy >= 0.25f) PetMood.CONTENT else curPet.currentMood
+                if (newEnergy != curPet.energy) {
+                    s.copy(pet = curPet.copy(energy = newEnergy, currentMood = updatedMood))
+                } else {
+                    s
+                }
+            } else {
+                // Если деньги есть и питомец не спит — расход энергии при активной игре
+                if (curPet.currentMood != PetMood.SLEEPING && !s.isRoomLightOff) {
+                    val newEnergy = (curPet.energy - 0.02f).coerceAtLeast(0.05f)
+                    val newHunger = (curPet.hunger - 0.015f).coerceAtLeast(0.05f)
+                    val updatedMood = when {
+                        newEnergy <= 0.2f -> PetMood.TIRED
+                        newHunger <= 0.3f -> PetMood.HUNGRY
+                        else -> curPet.currentMood
+                    }
+                    if (newEnergy != curPet.energy || newHunger != curPet.hunger) {
+                        s.copy(pet = curPet.copy(energy = newEnergy, hunger = newHunger, currentMood = updatedMood))
+                    } else {
+                        s
+                    }
+                } else {
+                    s
+                }
+            }
+        }
+        persistCurrentState()
     }
 
     private fun loadFromDatabase() {
@@ -764,9 +827,11 @@ object GameRepository {
             val newTotalCoins = state.totalCoins + coinsEarned
             val newExp = state.pet.exp + (coinsEarned * 2)
             val newHappiness = (state.pet.happiness + 0.15f).coerceIn(0f, 1f)
+            val newEnergy = (state.pet.energy - 0.15f).coerceIn(0.05f, 1f)
             val updatedPet = state.pet.copy(
                 exp = newExp,
                 happiness = newHappiness,
+                energy = newEnergy,
                 moodExplanation = "Питомец в восторге от твоих успехов в мини-игре! Заработано ${FormatUtils.formatCoins(coinsEarned)}."
             )
 
@@ -858,7 +923,7 @@ object GameRepository {
         db?.addTransaction(tx)
         db?.saveQuestCompletion(questId, optionIndex, reward, getCurrentDateString())
 
-        val newEnergy = (currentState.pet.energy - 0.20f).coerceIn(0.05f, 1f)
+        val newEnergy = (currentState.pet.energy - 0.15f).coerceIn(0.05f, 1f)
         val newHunger = (currentState.pet.hunger - 0.15f).coerceIn(0.05f, 1f)
         val newMood = when {
             newEnergy <= 0.2f -> PetMood.TIRED
@@ -892,6 +957,14 @@ object GameRepository {
             )
         }
         persistCurrentState()
+
+        // Автоматический переход к следующему периоду по мере прохождения глав (в каждой главе ровно 9 квестов):
+        // Завершение Главы 1 (9 квестов) открывает Период 2 и Главу 2, Главы 2 (18 квестов) — Период 3 и т.д.
+        val completedCount = updatedQuests.count { it.isCompleted }
+        val newTargetPeriod = (completedCount / 9 + 1).coerceAtMost(5)
+        if (newTargetPeriod > _gameState.value.currentPeriod) {
+            advanceToNextPeriod()
+        }
     }
 
     fun resetDailyQuestLimit() {
@@ -902,8 +975,10 @@ object GameRepository {
     }
 
     fun advanceToNextPeriod() {
+        if (_gameState.value.currentPeriod >= 5) return
+
         _gameState.update { state ->
-            val nextPeriodNumber = (state.currentPeriod % 5) + 1
+            val nextPeriodNumber = (state.currentPeriod + 1).coerceAtMost(5)
             val nextPeriodInfo = GamePeriodRepository.getPeriod(nextPeriodNumber)
             val pocketMoney = nextPeriodInfo.pocketMoneyAmount
 
@@ -1025,7 +1100,7 @@ object GameRepository {
             else -> EvolutionStage.BABY
         }
 
-        val completedQuestsThreshold = (targetPeriod - 1) * 2
+        val completedQuestsThreshold = (targetPeriod - 1) * 9
 
         _gameState.update { state ->
             val updatedQuests = state.quests.map { q ->
@@ -1247,7 +1322,7 @@ object GameRepository {
         _gameState.update { s ->
             val updatedPet = s.pet.copy(
                 happiness = (s.pet.happiness + 0.20f).coerceIn(0f, 1f),
-                energy = (s.pet.energy - 0.25f).coerceIn(0.05f, 1f),
+                energy = (s.pet.energy - 0.35f).coerceIn(0.05f, 1f),
                 currentMood = PetMood.HAPPY,
                 moodExplanation = "${s.pet.name} весело играет и радуется!"
             )

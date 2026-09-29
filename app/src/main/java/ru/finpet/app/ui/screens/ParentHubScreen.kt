@@ -1,6 +1,6 @@
 package ru.finpet.app.ui.screens
 
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.*
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -602,106 +602,112 @@ fun ParentHubScreen(
                     )
                 }
 
-                // Кнопки переключения игровых периодов для демонстрации
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                // Кнопки переключения игровых периодов (доступны только при включенном демонстрационном режиме)
+                AnimatedVisibility(
+                    visible = state.isDemoMode,
+                    enter = expandVertically() + fadeIn(),
+                    exit = shrinkVertically() + fadeOut()
                 ) {
-                    Text(
-                        text = "ВЫБОР ИГРОВОГО ПЕРИОДА:",
-                        fontFamily = UnboundedFamily,
-                        fontSize = 10.5.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = TextSecondary
-                    )
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .horizontalScroll(rememberScrollState()),
-                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        val periodTitles = listOf(
-                            1 to "1: Малыш 🌱",
-                            2 to "2: Бюджет 📊",
-                            3 to "3: Вклады 🏦",
-                            4 to "4: Подушка 🛡️",
-                            5 to "5: Мастер 👑"
+                        Text(
+                            text = "ВЫБОР ИГРОВОГО ПЕРИОДА:",
+                            fontFamily = UnboundedFamily,
+                            fontSize = 10.5.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = TextSecondary
                         )
 
-                        periodTitles.forEach { (pNum, pTitle) ->
-                            val isCurrent = state.currentPeriod == pNum
-                            Surface(
-                                shape = RoundedCornerShape(10.dp),
-                                color = if (isCurrent) currentTheme.primaryColor else SurfaceSubtle,
-                                border = BorderStroke(1.dp, if (isCurrent) currentTheme.primaryColor else OutlineLight),
-                                modifier = Modifier.bounceClick {
-                                    SoundHapticManager.performSuccessHaptic()
-                                    GameRepository.setPeriod(pNum)
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .horizontalScroll(rememberScrollState()),
+                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                        ) {
+                            val periodTitles = listOf(
+                                1 to "1: Малыш 🌱",
+                                2 to "2: Бюджет 📊",
+                                3 to "3: Вклады 🏦",
+                                4 to "4: Подушка 🛡️",
+                                5 to "5: Мастер 👑"
+                            )
+
+                            periodTitles.forEach { (pNum, pTitle) ->
+                                val isCurrent = state.currentPeriod == pNum
+                                Surface(
+                                    shape = RoundedCornerShape(10.dp),
+                                    color = if (isCurrent) currentTheme.primaryColor else SurfaceSubtle,
+                                    border = BorderStroke(1.dp, if (isCurrent) currentTheme.primaryColor else OutlineLight),
+                                    modifier = Modifier.bounceClick {
+                                        SoundHapticManager.performSuccessHaptic()
+                                        GameRepository.setPeriod(pNum)
+                                    }
+                                ) {
+                                    Text(
+                                        text = pTitle,
+                                        fontFamily = UnboundedFamily,
+                                        fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Medium,
+                                        fontSize = 11.sp,
+                                        color = if (isCurrent) Color.White else TextPrimary,
+                                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
+                                    )
                                 }
-                            ) {
+                            }
+                        }
+
+                        val currentPeriodInfo = GamePeriodRepository.getPeriod(state.currentPeriod)
+                        Surface(
+                            shape = RoundedCornerShape(12.dp),
+                            color = currentTheme.primaryColor.copy(alpha = 0.08f),
+                            border = BorderStroke(1.dp, currentTheme.primaryColor.copy(alpha = 0.2f)),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = "Период ${state.currentPeriod}: ${currentPeriodInfo.title}",
+                                        fontFamily = UnboundedFamily,
+                                        fontSize = 11.5.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = currentTheme.primaryColor
+                                    )
+                                    Text(
+                                        text = "Уровень ${state.currentPeriod}",
+                                        fontFamily = UnboundedFamily,
+                                        fontSize = 11.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = currentTheme.primaryColor
+                                    )
+                                }
                                 Text(
-                                    text = pTitle,
-                                    fontFamily = UnboundedFamily,
-                                    fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Medium,
-                                    fontSize = 11.sp,
-                                    color = if (isCurrent) Color.White else TextPrimary,
-                                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
+                                    text = "🎯 Цель: ${currentPeriodInfo.educationalGoal}",
+                                    fontSize = 11.5.sp,
+                                    lineHeight = 15.sp,
+                                    color = TextSecondary
                                 )
                             }
                         }
-                    }
 
-                    val currentPeriodInfo = GamePeriodRepository.getPeriod(state.currentPeriod)
-                    Surface(
-                        shape = RoundedCornerShape(12.dp),
-                        color = currentTheme.primaryColor.copy(alpha = 0.08f),
-                        border = BorderStroke(1.dp, currentTheme.primaryColor.copy(alpha = 0.2f)),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(
-                                    text = "Период ${state.currentPeriod}: ${currentPeriodInfo.title}",
-                                    fontFamily = UnboundedFamily,
-                                    fontSize = 11.5.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = currentTheme.primaryColor
-                                )
-                                Text(
-                                    text = "Уровень ${state.currentPeriod}",
-                                    fontFamily = UnboundedFamily,
-                                    fontSize = 11.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = currentTheme.primaryColor
-                                )
-                            }
-                            Text(
-                                text = "🎯 Цель: ${currentPeriodInfo.educationalGoal}",
+                        // Кнопка подведения итогов и перехода к следующему периоду прямо из хаба
+                        if (state.currentPeriod < 5) {
+                            CartoonButton(
+                                text = "Завершить период ${state.currentPeriod} и перейти к следующему 🏆",
+                                onClick = {
+                                    SoundHapticManager.performSuccessHaptic()
+                                    GameRepository.advanceToNextPeriod()
+                                },
+                                containerColor = currentTheme.primaryColor,
+                                height = 42.dp,
                                 fontSize = 11.5.sp,
-                                lineHeight = 15.sp,
-                                color = TextSecondary
+                                modifier = Modifier.fillMaxWidth()
                             )
                         }
-                    }
-
-                    // Кнопка подведения итогов и перехода к следующему периоду прямо из хаба
-                    if (state.currentPeriod < 5) {
-                        CartoonButton(
-                            text = "Завершить период ${state.currentPeriod} и перейти к следующему 🏆",
-                            onClick = {
-                                SoundHapticManager.performSuccessHaptic()
-                                GameRepository.advanceToNextPeriod()
-                            },
-                            containerColor = currentTheme.primaryColor,
-                            height = 42.dp,
-                            fontSize = 11.5.sp,
-                            modifier = Modifier.fillMaxWidth()
-                        )
                     }
                 }
 
