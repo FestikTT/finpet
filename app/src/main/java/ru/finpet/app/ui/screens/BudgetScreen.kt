@@ -46,7 +46,8 @@ import ru.finpet.app.util.FormatUtils
 fun BudgetScreen(
     state: GameState,
     onUpdatePlan: (needs: Int, wants: Int, savings: Int) -> Unit,
-    onConfirmPlan: () -> Unit
+    onConfirmPlan: () -> Unit,
+    onAdvancePeriod: () -> Unit = {}
 ) {
     val currentTheme = LocalAppTheme.current
     val plan = state.budgetPlan
@@ -781,7 +782,7 @@ fun BudgetScreen(
                                     color = TextPrimary
                                 )
                                 Text(
-                                    text = "Выделялось карманных денег: ${prevPeriodInfo.pocketMoneyAmount} монет",
+                                    text = "Бюджетный план периода: ${prevPeriodInfo.pocketMoneyAmount} монет",
                                     fontSize = 11.5.sp,
                                     color = TextSecondary
                                 )
@@ -800,6 +801,42 @@ fun BudgetScreen(
                                     )
                                 }
                             }
+                        }
+                    }
+                }
+
+                // Кнопка подведения итогов текущего периода и перехода к следующему
+                if (state.currentPeriod < 5) {
+                    CartoonButton(
+                        text = "Подвести итоги периода ${state.currentPeriod} 🏆",
+                        onClick = {
+                            SoundHapticManager.performSuccessHaptic()
+                            onAdvancePeriod()
+                        },
+                        containerColor = currentTheme.primaryColor,
+                        height = 48.dp,
+                        fontSize = 13.sp,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                } else {
+                    Surface(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp),
+                        color = Color(0xFFFEF3C7),
+                        border = BorderStroke(1.dp, Color(0xFFF59E0B))
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(12.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Text("👑", fontSize = 20.sp)
+                            Text(
+                                text = "Достигнут высший статус: Мастер финансов! Все периоды успешно пройдены.",
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFF92400E)
+                            )
                         }
                     }
                 }
@@ -1295,43 +1332,100 @@ private fun TransactionHistorySection(state: GameState) {
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                        Text("Потрачено", fontSize = 11.sp, color = TextSecondary)
-                        Text(
-                            text = "-$totalSpent монет",
-                            fontFamily = UnboundedFamily,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 14.sp,
-                            color = BrandPinkNeon
-                        )
-                    }
-                    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                        Text("Заработано", fontSize = 11.sp, color = TextSecondary)
-                        Text(
-                            text = "+$totalEarned монет",
-                            fontFamily = UnboundedFamily,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 14.sp,
-                            color = FinGreenEmerald
-                        )
-                    }
-                    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                        Text("В копилке", fontSize = 11.sp, color = TextSecondary)
-                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                            Icon(
-                                painter = painterResource(ru.finpet.app.R.drawable.ic_target),
-                                contentDescription = null,
-                                tint = currentTheme.primaryColor,
-                                modifier = Modifier.size(13.dp)
-                            )
+                    // Потрачено
+                    Surface(
+                        modifier = Modifier.weight(1f),
+                        shape = RoundedCornerShape(12.dp),
+                        color = DangerRedColor.copy(alpha = 0.08f),
+                        border = BorderStroke(1.dp, DangerRedColor.copy(alpha = 0.2f))
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp),
+                            verticalArrangement = Arrangement.spacedBy(2.dp)
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                                Icon(
+                                    Icons.Rounded.ArrowDownward,
+                                    contentDescription = null,
+                                    tint = DangerRedColor,
+                                    modifier = Modifier.size(13.dp)
+                                )
+                                Text("Потрачено", fontSize = 10.5.sp, color = TextSecondary, maxLines = 1)
+                            }
                             Text(
-                                text = "${state.totalSavingsAmount} монет",
+                                text = "-$totalSpent 🪙",
                                 fontFamily = UnboundedFamily,
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 14.sp,
-                                color = currentTheme.primaryColor
+                                fontSize = 12.5.sp,
+                                color = DangerRedColor,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                    }
+
+                    // Заработано
+                    Surface(
+                        modifier = Modifier.weight(1f),
+                        shape = RoundedCornerShape(12.dp),
+                        color = StatGreenEmerald.copy(alpha = 0.08f),
+                        border = BorderStroke(1.dp, StatGreenEmerald.copy(alpha = 0.2f))
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp),
+                            verticalArrangement = Arrangement.spacedBy(2.dp)
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                                Icon(
+                                    Icons.Rounded.ArrowUpward,
+                                    contentDescription = null,
+                                    tint = StatGreenEmerald,
+                                    modifier = Modifier.size(13.dp)
+                                )
+                                Text("Доход", fontSize = 10.5.sp, color = TextSecondary, maxLines = 1)
+                            }
+                            Text(
+                                text = "+$totalEarned 🪙",
+                                fontFamily = UnboundedFamily,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 12.5.sp,
+                                color = StatGreenEmerald,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                    }
+
+                    // В копилке
+                    Surface(
+                        modifier = Modifier.weight(1f),
+                        shape = RoundedCornerShape(12.dp),
+                        color = currentTheme.primaryColor.copy(alpha = 0.08f),
+                        border = BorderStroke(1.dp, currentTheme.primaryColor.copy(alpha = 0.2f))
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp),
+                            verticalArrangement = Arrangement.spacedBy(2.dp)
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                                Icon(
+                                    painter = painterResource(ru.finpet.app.R.drawable.ic_piggy_bank),
+                                    contentDescription = null,
+                                    tint = currentTheme.primaryColor,
+                                    modifier = Modifier.size(13.dp)
+                                )
+                                Text("В копилке", fontSize = 10.5.sp, color = TextSecondary, maxLines = 1)
+                            }
+                            Text(
+                                text = "${state.totalSavingsAmount} 🪙",
+                                fontFamily = UnboundedFamily,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 12.5.sp,
+                                color = currentTheme.primaryColor,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
                     }
@@ -1515,9 +1609,33 @@ private fun TransactionHistorySection(state: GameState) {
 
 @Composable
 private fun BudgetLegend(title: String, ratio: Float, color: Color, modifier: Modifier = Modifier) {
-    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        Box(modifier = Modifier.size(7.dp).clip(CircleShape).background(color))
-        Text("$title (${(ratio * 100).toInt()}%)", fontSize = 10.sp, fontWeight = FontWeight.SemiBold, color = TextPrimary, maxLines = 1, overflow = TextOverflow.Ellipsis)
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(2.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Box(modifier = Modifier.size(7.dp).clip(CircleShape).background(color))
+            Text(
+                text = "${(ratio * 100).toInt()}%",
+                fontSize = 11.sp,
+                fontFamily = UnboundedFamily,
+                fontWeight = FontWeight.Bold,
+                color = color
+            )
+        }
+        Text(
+            text = title,
+            fontSize = 10.sp,
+            fontWeight = FontWeight.Medium,
+            color = TextSecondary,
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+            maxLines = 1,
+            softWrap = false
+        )
     }
 }
 

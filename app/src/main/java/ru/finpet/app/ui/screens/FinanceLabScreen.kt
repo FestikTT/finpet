@@ -35,7 +35,7 @@ fun FinanceLabScreen(
 ) {
     val currentTheme = LocalAppTheme.current
     var selectedLabTab by remember { mutableIntStateOf(0) } // 0: Сложный процент, 1: Кофе-эффект, 2: Подушка безопасности, 3: Лайфхаки
-    var isCoinMode by remember { mutableStateOf(false) } // Переключатель валюты (Аудит п.9)
+    var isCoinMode by remember { mutableStateOf(true) } // Переключатель валюты (по умолчанию монеты)
 
     val rubFormatter = remember {
         NumberFormat.getNumberInstance(Locale("ru")).apply {

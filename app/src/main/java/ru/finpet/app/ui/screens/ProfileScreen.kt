@@ -9,6 +9,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -387,7 +388,8 @@ fun ProfileScreen(
             onClick = onNavigateToParentHub
         )
 
-        // 4. Блок "Настройки приложения"
+
+        // 5. Блок "Настройки приложения"
         Text(
             text = "НАСТРОЙКИ",
             fontFamily = UnboundedFamily,
@@ -430,6 +432,37 @@ fun ProfileScreen(
                             hapticsEnabled = enabled
                             SoundHapticManager.isHapticsEnabled = enabled
                             if (enabled) SoundHapticManager.performClickHaptic()
+                        }
+                    )
+                }
+
+                HorizontalDivider(color = OutlineLight.copy(alpha = 0.5f))
+
+                // Фоновая музыка
+                val isMusicActive = state.isMusicEnabled
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                        Icon(
+                            Icons.Rounded.MusicNote,
+                            contentDescription = null,
+                            tint = currentTheme.primaryColor,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Column {
+                            Text("Фоновая музыка", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = TextPrimary)
+                            Text(if (isMusicActive) "Уютная мелодия включена" else "Музыка отключена", fontSize = 11.sp, color = TextSecondary)
+                        }
+                    }
+
+                    Switch(
+                        checked = isMusicActive,
+                        onCheckedChange = {
+                            SoundHapticManager.performClickHaptic()
+                            GameRepository.toggleMusic()
                         }
                     )
                 }

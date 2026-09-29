@@ -136,7 +136,7 @@ fun ShopScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = if (mainTabMode == 0) "Рынок" else "Склад",
+                    text = "Магазин",
                     fontFamily = UnboundedFamily,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Black,
@@ -171,7 +171,7 @@ fun ShopScreen(
                 }
             }
 
-            // Переключатель верхних вкладок: «Рынок» / «Склад»
+            // Переключатель верхних вкладок: «Витрина» / «Инвентарь»
             Surface(
                 shape = RoundedCornerShape(14.dp),
                 color = SurfaceVariantLight,
@@ -194,7 +194,7 @@ fun ShopScreen(
                     ) {
                         Box(contentAlignment = Alignment.Center) {
                             Text(
-                                text = "Рынок 🏪",
+                                text = "Витрина 🛍️",
                                 fontFamily = UnboundedFamily,
                                 fontWeight = if (mainTabMode == 0) FontWeight.Bold else FontWeight.Medium,
                                 fontSize = 12.5.sp,
@@ -216,7 +216,7 @@ fun ShopScreen(
                     ) {
                         Box(contentAlignment = Alignment.Center) {
                             Text(
-                                text = "Склад 📦",
+                                text = "Инвентарь 🎒",
                                 fontFamily = UnboundedFamily,
                                 fontWeight = if (mainTabMode == 1) FontWeight.Bold else FontWeight.Medium,
                                 fontSize = 12.5.sp,
@@ -578,26 +578,28 @@ fun ShopScreen(
                     }
 
                     // Бусты параметров
-                    if (item.hungerBoost > 0f || item.happinessBoost > 0f || item.careBoost > 0f || item.energyBoost > 0f) {
+                    val hasFoodBoost = item.category == ShopCategory.FOOD || item.energyBoost > 0f
+                    if (hasFoodBoost || item.category == ShopCategory.ACCESSORIES || item.roomSlotType != null) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            if (item.hungerBoost > 0f) {
-                                Surface(shape = RoundedCornerShape(8.dp), color = StatGreenEmerald.copy(alpha = 0.12f)) {
+                            if (hasFoodBoost) {
+                                val boost = if (item.energyBoost > 0f) item.energyBoost else if (item.hungerBoost > 0f) item.hungerBoost else 0.35f
+                                Surface(shape = RoundedCornerShape(8.dp), color = Color(0xFFD97706).copy(alpha = 0.12f)) {
                                     Text(
-                                        text = "Сытость +${(item.hungerBoost * 100).toInt()}%",
+                                        text = "Энергия +${(boost * 100).toInt()}% ⚡",
                                         fontSize = 11.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = StatGreenEmerald,
+                                        color = Color(0xFFD97706),
                                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                                     )
                                 }
                             }
-                            if (item.happinessBoost > 0f) {
+                            if (item.category == ShopCategory.ACCESSORIES) {
                                 Surface(shape = RoundedCornerShape(8.dp), color = BrandLavender.copy(alpha = 0.12f)) {
                                     Text(
-                                        text = "Радость +${(item.happinessBoost * 100).toInt()}%",
+                                        text = "Стиль 🎀",
                                         fontSize = 11.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = BrandLavender,
@@ -605,10 +607,10 @@ fun ShopScreen(
                                     )
                                 }
                             }
-                            if (item.careBoost > 0f) {
+                            if (item.roomSlotType != null) {
                                 Surface(shape = RoundedCornerShape(8.dp), color = ElectricCobaltPrimary.copy(alpha = 0.12f)) {
                                     Text(
-                                        text = "Уход +${(item.careBoost * 100).toInt()}%",
+                                        text = "Интерьер 🛋️",
                                         fontSize = 11.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = ElectricCobaltPrimary,
@@ -703,13 +705,7 @@ private fun MarketItemCard(
     val cardBg = if (isDark) {
         SurfaceLight
     } else {
-        when (item.category) {
-            ShopCategory.FOOD -> Color(0xFFF0FDF4)
-            ShopCategory.TOYS -> Color(0xFFFFF7ED)
-            ShopCategory.ACCESSORIES -> Color(0xFFFAF5FF)
-            ShopCategory.HYGIENE -> Color(0xFFF0FDFA)
-            ShopCategory.WALLPAPER -> Color(0xFFEFF6FF)
-        }
+        Color(0xFFEFF6FF)
     }
 
     Surface(
@@ -772,11 +768,13 @@ private fun MarketItemCard(
 
             val (statText, statColor) = remember(item) {
                 when {
-                    item.hungerBoost > 0f -> Pair("+${(item.hungerBoost * 100).toInt()} к сытости", Color(0xFF16A34A))
-                    item.careBoost > 0f -> Pair("+${(item.careBoost * 100).toInt()} к уходу 🧼", Color(0xFF0284C7))
-                    item.roomSlotType != null -> Pair("+Уют в комнате 🏠", Color(0xFFD97706))
-                    item.happinessBoost > 0f -> Pair("+${(item.happinessBoost * 100).toInt()} к настроению 🌟", Color(0xFF7C3AED))
-                    else -> Pair("+Опыт питомца ✨", Color(0xFF2563EB))
+                    item.category == ShopCategory.FOOD || item.energyBoost > 0f -> {
+                        val boost = if (item.energyBoost > 0f) item.energyBoost else if (item.hungerBoost > 0f) item.hungerBoost else 0.35f
+                        Pair("+${(boost * 100).toInt()}% Энергия ⚡", Color(0xFFD97706))
+                    }
+                    item.category == ShopCategory.ACCESSORIES -> Pair("Стиль питомца 🎀", Color(0xFF7C3AED))
+                    item.roomSlotType != null -> Pair("Интерьер комнаты 🛋️", Color(0xFF2563EB))
+                    else -> Pair("Полезный предмет ✨", Color(0xFF2563EB))
                 }
             }
             Surface(

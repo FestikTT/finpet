@@ -9,6 +9,7 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
@@ -410,11 +411,14 @@ fun OnboardingScreen(
                                                 horizontalArrangement = Arrangement.spacedBy(6.dp)
                                             ) {
                                                 Text(themeEmoji, fontSize = 14.sp)
+                                                val circleColor = if (theme == AppTheme.MONOCHROME_MINIMAL) Color(0xFF18181B) else theme.primaryLight
+                                                val circleBorder = if (theme == AppTheme.MONOCHROME_MINIMAL) BorderStroke(1.dp, Color(0xFF71717A)) else null
                                                 Box(
                                                     modifier = Modifier
                                                         .size(12.dp)
                                                         .clip(CircleShape)
-                                                        .background(theme.primaryLight)
+                                                        .background(circleColor)
+                                                        .then(if (circleBorder != null) Modifier.border(circleBorder.width, circleBorder.brush, CircleShape) else Modifier)
                                                 )
                                                 Text(
                                                     text = theme.title,

@@ -282,95 +282,95 @@ object GameRepository {
     }
 
     private fun getBaseGoals() = listOf(
-        FinancialGoal("g_scooter", "Городской самокат", 150, 40, "🛴"),
-        FinancialGoal("g_boardgame", "Развивающая настольная игра", 80, 25, "🎲"),
-        FinancialGoal("g_aquapark", "Семейный визит в аквапарк", 200, 10, "🏊‍♂️")
+        FinancialGoal("g_scooter", "Городской самокат", 150, 0, "🛴"),
+        FinancialGoal("g_boardgame", "Развивающая настольная игра", 80, 0, "🎲"),
+        FinancialGoal("g_aquapark", "Семейный визит в аквапарк", 200, 0, "🏊‍♂️")
     )
 
     private fun getBaseShopItems() = listOf(
         // ==========================================
-        // 1. ЕДА (FOOD) — 15 предметов
+        // 1. ЕДА (FOOD) — 15 предметов (дает энергию питомцу для квестов)
         // ==========================================
-        ShopItem("sh_food_dry", "Сбалансированный сухой рацион", 18, ShopCategory.FOOD, "🥣", hungerBoost = 0.40f, energyBoost = 0.35f, careBoost = 0.10f, isMandatory = true, tip = "Полнорационный базовый комплекс питательных веществ для энергии питомца"),
-        ShopItem("sh_food_carrot", "Органическая фермерская морковь", 12, ShopCategory.FOOD, "🥕", hungerBoost = 0.25f, energyBoost = 0.20f, careBoost = 0.15f, isMandatory = true, tip = "Натуральный источник бета-каротина и пищевых волокон", iconRes = ru.finpet.app.R.drawable.ic_item_carrot),
-        ShopItem("sh_food_meat", "Мясные деликатесные палочки", 26, ShopCategory.FOOD, "🍖", hungerBoost = 0.35f, energyBoost = 0.30f, happinessBoost = 0.25f, isMandatory = false, tip = "Премиальное протеиновое лакомство для активного роста"),
-        ShopItem("sh_food_donut", "Ягодный праздничный десерт", 15, ShopCategory.FOOD, "🍩", happinessBoost = 0.30f, hungerBoost = 0.15f, energyBoost = 0.15f, isMandatory = false, tip = "Кондитерское изделие из натуральных ягод для поднятия настроения"),
-        ShopItem("sh_food_fish", "Филе атлантического лосося", 30, ShopCategory.FOOD, "🐟", hungerBoost = 0.45f, energyBoost = 0.40f, happinessBoost = 0.20f, isMandatory = false, tip = "Богатый источник жирных кислот Омега-3 и легкоусвояемого белка", iconRes = ru.finpet.app.R.drawable.ic_item_fish),
-        ShopItem("sh_food_milk", "Отборное фермерское молоко", 16, ShopCategory.FOOD, "🥛", hungerBoost = 0.25f, energyBoost = 0.25f, careBoost = 0.20f, isMandatory = true, tip = "Пастеризованное молоко высшей категории с высоким содержанием кальция"),
-        ShopItem("sh_food_ramen", "Традиционный рамен с птицей", 32, ShopCategory.FOOD, "🍜", hungerBoost = 0.50f, energyBoost = 0.45f, happinessBoost = 0.30f, isMandatory = false, tip = "Наваристый питательный бульон с пшеничной лапшой и яйцом"),
-        ShopItem("sh_food_mochi", "Десерт моти с чаем матча", 19, ShopCategory.FOOD, "🍡", hungerBoost = 0.25f, energyBoost = 0.20f, happinessBoost = 0.35f, isMandatory = false, tip = "Традиционное японское лакомство из рисовой муки высшего сорта"),
-        ShopItem("sh_food_bento", "Комплексный бенто-рацион", 36, ShopCategory.FOOD, "🍱", hungerBoost = 0.60f, energyBoost = 0.50f, happinessBoost = 0.25f, isMandatory = true, tip = "Сбалансированный порционный обед из натуральных ингредиентов"),
-        ShopItem("sh_food_cheese", "Выдержанный альпийский сыр", 20, ShopCategory.FOOD, "🧀", hungerBoost = 0.30f, energyBoost = 0.25f, careBoost = 0.15f, isMandatory = false, tip = "Твердый натуральный сыр длительного созревания с высоким содержанием белка"),
-        ShopItem("sh_food_strawberry", "Свежая садовая клубника", 14, ShopCategory.FOOD, "🍓", hungerBoost = 0.20f, energyBoost = 0.15f, happinessBoost = 0.25f, isMandatory = false, tip = "Спелые отборные ягоды, богатые природным витамином C"),
-        ShopItem("sh_food_apple", "Свежее зеленое яблоко", 10, ShopCategory.FOOD, "🍏", hungerBoost = 0.20f, energyBoost = 0.20f, careBoost = 0.10f, isMandatory = true, tip = "Диетический фрукт с высоким содержанием железа и пектина"),
-        ShopItem("sh_food_onigiri", "Рисовый онигири с тунцом", 22, ShopCategory.FOOD, "🍙", hungerBoost = 0.35f, energyBoost = 0.30f, happinessBoost = 0.20f, isMandatory = true, tip = "Классическое сытное блюдо из японского риса и морской рыбы"),
-        ShopItem("sh_food_bubble_tea", "Чайный напиток с тапиокой", 24, ShopCategory.FOOD, "🧋", happinessBoost = 0.40f, hungerBoost = 0.15f, energyBoost = 0.20f, isMandatory = false, tip = "Освежающий чайный коктейль с жемчужинами тапиоки"),
-        ShopItem("sh_food_waffles", "Венские медовые вафли", 17, ShopCategory.FOOD, "🧇", hungerBoost = 0.25f, energyBoost = 0.25f, happinessBoost = 0.25f, isMandatory = false, tip = "Свежая выпечка с натуральным цветочным медом"),
+        ShopItem("sh_food_dry", "Хрустящий корм", 18, ShopCategory.FOOD, "🥣", hungerBoost = 0.40f, energyBoost = 0.45f, careBoost = 0.10f, isMandatory = true, tip = "Полезный сухой корм для сытости и заряда энергии ⚡"),
+        ShopItem("sh_food_carrot", "Свежая морковка", 12, ShopCategory.FOOD, "🥕", hungerBoost = 0.25f, energyBoost = 0.30f, careBoost = 0.15f, isMandatory = true, tip = "Хрустящая сладкая морковка с витаминами 🥕", iconRes = ru.finpet.app.R.drawable.ic_item_carrot),
+        ShopItem("sh_food_meat", "Мясное лакомство", 26, ShopCategory.FOOD, "🍖", hungerBoost = 0.35f, energyBoost = 0.40f, happinessBoost = 0.25f, isMandatory = false, tip = "Вкусные мясные палочки для бодрости 🍖"),
+        ShopItem("sh_food_donut", "Ягодный пончик", 15, ShopCategory.FOOD, "🍩", happinessBoost = 0.30f, hungerBoost = 0.15f, energyBoost = 0.25f, isMandatory = false, tip = "Сладкий пончик с глазурью для отличного настроения 🍩"),
+        ShopItem("sh_food_fish", "Рыбка лосось", 30, ShopCategory.FOOD, "🐟", hungerBoost = 0.45f, energyBoost = 0.50f, happinessBoost = 0.20f, isMandatory = false, tip = "Аппетитная рыбка — лучший источник сил и энергии 🐟", iconRes = ru.finpet.app.R.drawable.ic_item_fish),
+        ShopItem("sh_food_milk", "Парное молочко", 16, ShopCategory.FOOD, "🥛", hungerBoost = 0.25f, energyBoost = 0.35f, careBoost = 0.20f, isMandatory = true, tip = "Свежее фермерское молочко для здоровья 🥛"),
+        ShopItem("sh_food_ramen", "Сытный суп рамен", 32, ShopCategory.FOOD, "🍜", hungerBoost = 0.50f, energyBoost = 0.55f, happinessBoost = 0.30f, isMandatory = false, tip = "Горячий супчик с лапшой для супер-энергии 🍜"),
+        ShopItem("sh_food_mochi", "Сладкие моти", 19, ShopCategory.FOOD, "🍡", hungerBoost = 0.25f, energyBoost = 0.30f, happinessBoost = 0.35f, isMandatory = false, tip = "Нежное японское пирожное 🍡"),
+        ShopItem("sh_food_bento", "Обед бенто", 36, ShopCategory.FOOD, "🍱", hungerBoost = 0.60f, energyBoost = 0.60f, happinessBoost = 0.25f, isMandatory = true, tip = "Большой праздничный обед в коробочке 🍱"),
+        ShopItem("sh_food_cheese", "Вкусный сыр", 20, ShopCategory.FOOD, "🧀", hungerBoost = 0.30f, energyBoost = 0.35f, careBoost = 0.15f, isMandatory = false, tip = "Ароматный кусочек сыра 🧀"),
+        ShopItem("sh_food_strawberry", "Сладкая клубника", 14, ShopCategory.FOOD, "🍓", hungerBoost = 0.20f, energyBoost = 0.25f, happinessBoost = 0.25f, isMandatory = false, tip = "Спелые садовые ягодки 🍓"),
+        ShopItem("sh_food_apple", "Сочное яблоко", 10, ShopCategory.FOOD, "🍏", hungerBoost = 0.20f, energyBoost = 0.25f, careBoost = 0.10f, isMandatory = true, tip = "Хрустящее зеленое яблочко 🍏"),
+        ShopItem("sh_food_onigiri", "Рисовый онигири", 22, ShopCategory.FOOD, "🍙", hungerBoost = 0.35f, energyBoost = 0.40f, happinessBoost = 0.20f, isMandatory = true, tip = "Сытный треугольник из риса с рыбкой 🍙"),
+        ShopItem("sh_food_bubble_tea", "Чай бабл-ти", 24, ShopCategory.FOOD, "🧋", happinessBoost = 0.40f, hungerBoost = 0.15f, energyBoost = 0.30f, isMandatory = false, tip = "Освежающий чай с шариками тапиоки 🧋"),
+        ShopItem("sh_food_waffles", "Медовые вафли", 17, ShopCategory.FOOD, "🧇", hungerBoost = 0.25f, energyBoost = 0.30f, happinessBoost = 0.25f, isMandatory = false, tip = "Хрустящие вафельки с цветочным медом 🧇"),
 
         // ==========================================
         // 2. ГИГИЕНА (HYGIENE) — 13 предметов
         // ==========================================
-        ShopItem("sh_hyg_shampoo", "Органический уходовый шампунь", 22, ShopCategory.HYGIENE, "🧼", careBoost = 0.45f, happinessBoost = 0.15f, isMandatory = true, tip = "Гипоаллергенное средство для глубокого очищения и блеска шерсти", iconRes = ru.finpet.app.R.drawable.ic_item_soap),
-        ShopItem("sh_hyg_brush", "Массажная щетка для шерсти", 18, ShopCategory.HYGIENE, "🪮", careBoost = 0.35f, happinessBoost = 0.20f, isMandatory = true, tip = "Эргономичный инструмент для ежедневного деликатного груминга", iconRes = ru.finpet.app.R.drawable.ic_item_brush),
-        ShopItem("sh_hyg_vitamins", "Поливитаминный комплекс", 32, ShopCategory.HYGIENE, "💊", careBoost = 0.50f, energyBoost = 0.20f, isMandatory = true, tip = "Сбалансированный комплекс витаминов и минералов для укрепления иммунитета"),
-        ShopItem("sh_hyg_wipes", "Гигиенические влажные салфетки", 14, ShopCategory.HYGIENE, "🧻", careBoost = 0.30f, isMandatory = true, tip = "Антисептические салфетки для бережного ухода после прогулки"),
-        ShopItem("sh_hyg_towel", "Бамбуковое махровое полотенце", 20, ShopCategory.HYGIENE, "🧖", careBoost = 0.35f, happinessBoost = 0.10f, isMandatory = true, tip = "Впитывающее полотенце высокой плотности из натурального волокна"),
-        ShopItem("sh_hyg_bath", "Релаксационная пенная ванна", 38, ShopCategory.HYGIENE, "🛁", careBoost = 0.60f, happinessBoost = 0.40f, isMandatory = false, tip = "Комплекс для водных процедур с успокаивающими экстрактами"),
-        ShopItem("sh_hyg_sonic_brush", "Ультразвуковая зубная щетка", 34, ShopCategory.HYGIENE, "🪥", careBoost = 0.45f, energyBoost = 0.15f, isMandatory = true, tip = "Высокотехнологичный инструмент для гигиены полости рта"),
-        ShopItem("sh_hyg_golden_comb", "Коллекционный позолоченный гребень", 42, ShopCategory.HYGIENE, "✨", careBoost = 0.55f, happinessBoost = 0.35f, isMandatory = false, tip = "Ювелирный инструмент премиального класса для идеального груминга", iconRes = ru.finpet.app.R.drawable.ic_item_brush),
-        ShopItem("sh_hyg_spray", "Антисептический спрей с алоэ", 16, ShopCategory.HYGIENE, "🩹", careBoost = 0.30f, isMandatory = true, tip = "Раствор для дезинфекции и ускоренной регенерации кожи"),
-        ShopItem("sh_hyg_powder", "Гигиеническая лавандовая пудра", 24, ShopCategory.HYGIENE, "🌸", careBoost = 0.35f, happinessBoost = 0.25f, isMandatory = false, tip = "Минеральное средство для дезодорации и комфорта шерсти"),
-        ShopItem("sh_hyg_clipper", "Прецизионный когтерез", 22, ShopCategory.HYGIENE, "✂️", careBoost = 0.35f, isMandatory = true, tip = "Инструмент из хирургической стали с защитным ограничителем"),
-        ShopItem("sh_hyg_perfume", "Парфюмированная вода для питомцев", 36, ShopCategory.HYGIENE, "🧴", happinessBoost = 0.45f, careBoost = 0.25f, isMandatory = false, tip = "Деликатная бесспиртовая эссенция с ароматом цветущей вишни"),
-        ShopItem("sh_hyg_drops", "Офтальмологические капли для глаз", 25, ShopCategory.HYGIENE, "💧", careBoost = 0.40f, isMandatory = true, tip = "Стерильный изотонический раствор для увлажнения и защиты глаз"),
+        ShopItem("sh_hyg_shampoo", "Нежный шампунь", 22, ShopCategory.HYGIENE, "🧼", careBoost = 0.45f, happinessBoost = 0.15f, isMandatory = true, tip = "Ароматная пенка для чистой и блестящей шерстки", iconRes = ru.finpet.app.R.drawable.ic_item_soap),
+        ShopItem("sh_hyg_brush", "Мягкая расческа", 18, ShopCategory.HYGIENE, "🪮", careBoost = 0.35f, happinessBoost = 0.20f, isMandatory = true, tip = "Удобная щеточка для приятного расчесывания", iconRes = ru.finpet.app.R.drawable.ic_item_brush),
+        ShopItem("sh_hyg_vitamins", "Витаминки", 32, ShopCategory.HYGIENE, "💊", careBoost = 0.50f, energyBoost = 0.30f, isMandatory = true, tip = "Комплекс витаминов для крепкого иммунитета"),
+        ShopItem("sh_hyg_wipes", "Влажные салфетки", 14, ShopCategory.HYGIENE, "🧻", careBoost = 0.30f, isMandatory = true, tip = "Салфетки для чистых лапок после прогулки"),
+        ShopItem("sh_hyg_towel", "Пушистое полотенце", 20, ShopCategory.HYGIENE, "🧖", careBoost = 0.35f, happinessBoost = 0.10f, isMandatory = true, tip = "Мягкое полотенце после купания"),
+        ShopItem("sh_hyg_bath", "Ванна с пеной", 38, ShopCategory.HYGIENE, "🛁", careBoost = 0.60f, happinessBoost = 0.40f, isMandatory = false, tip = "Теплая ванна с пузырьками для полного релакса"),
+        ShopItem("sh_hyg_sonic_brush", "Зубная щеточка", 34, ShopCategory.HYGIENE, "🪥", careBoost = 0.45f, energyBoost = 0.15f, isMandatory = true, tip = "Щеточка для белоснежной улыбки"),
+        ShopItem("sh_hyg_golden_comb", "Золотой гребешок", 42, ShopCategory.HYGIENE, "✨", careBoost = 0.55f, happinessBoost = 0.35f, isMandatory = false, tip = "Красивый гребень для королевской шерстки", iconRes = ru.finpet.app.R.drawable.ic_item_brush),
+        ShopItem("sh_hyg_spray", "Спрей с алоэ", 16, ShopCategory.HYGIENE, "🩹", careBoost = 0.30f, isMandatory = true, tip = "Освежающий спрей для ухода"),
+        ShopItem("sh_hyg_powder", "Лавандовая пудра", 24, ShopCategory.HYGIENE, "🌸", careBoost = 0.35f, happinessBoost = 0.25f, isMandatory = false, tip = "Нежная пудра с запахом цветов"),
+        ShopItem("sh_hyg_clipper", "Когтерезка", 22, ShopCategory.HYGIENE, "✂️", careBoost = 0.35f, isMandatory = true, tip = "Аккуратный уход за коготками"),
+        ShopItem("sh_hyg_perfume", "Детский парфюм", 36, ShopCategory.HYGIENE, "🧴", happinessBoost = 0.45f, careBoost = 0.25f, isMandatory = false, tip = "Сладкий аромат весенней вишни"),
+        ShopItem("sh_hyg_drops", "Капли для глазок", 25, ShopCategory.HYGIENE, "💧", careBoost = 0.40f, isMandatory = true, tip = "Увлажняющие капли для ясного взгляда"),
 
         // ==========================================
         // 3. ОБОИ И ПОЛ (WALLPAPER) — 16 предметов
         // ==========================================
-        ShopItem("sh_wp_gray", "Классическая матовая отделка", 0, ShopCategory.WALLPAPER, "🧱", roomSlotType = RoomSlotType.WALLPAPER, tip = "Универсальное настенное покрытие в нейтральных тонах"),
-        ShopItem("sh_wp_brick", "Облицовочный клинкерный кирпич", 35, ShopCategory.WALLPAPER, "🧱", roomSlotType = RoomSlotType.WALLPAPER, happinessBoost = 0.25f, tip = "Архитектурная кладка в современном урбанистическом стиле"),
-        ShopItem("sh_wp_space", "Панорама звездного пространства", 45, ShopCategory.WALLPAPER, "🌌", roomSlotType = RoomSlotType.WALLPAPER, happinessBoost = 0.35f, tip = "Художественное настенное панно с глубоким астрономическим градиентом"),
-        ShopItem("sh_wp_clouds", "Пастельная фреска «Облака»", 35, ShopCategory.WALLPAPER, "☁️", roomSlotType = RoomSlotType.WALLPAPER, happinessBoost = 0.25f, tip = "Атмосферное покрытие с мягкой воздушной композицией"),
-        ShopItem("sh_wp_cyber", "Неоновое цифровое панно", 50, ShopCategory.WALLPAPER, "🌐", roomSlotType = RoomSlotType.WALLPAPER, happinessBoost = 0.40f, tip = "Футуристическая отделка со светодиодными линиями"),
-        ShopItem("sh_wp_sunflower", "Флористическое панно «Подсолнухи»", 40, ShopCategory.WALLPAPER, "🌻", roomSlotType = RoomSlotType.WALLPAPER, happinessBoost = 0.30f, tip = "Насыщенная солнечная роспись для теплой атмосферы"),
-        ShopItem("sh_wp_sakura", "Японская фреска «Цветущая сакура»", 48, ShopCategory.WALLPAPER, "🌸", roomSlotType = RoomSlotType.WALLPAPER, happinessBoost = 0.40f, tip = "Традиционная шелкография с мотивами весеннего сада"),
-        ShopItem("sh_wp_retro", "Ретро-панорама «Горный хребет»", 42, ShopCategory.WALLPAPER, "🏔️", roomSlotType = RoomSlotType.WALLPAPER, happinessBoost = 0.35f, tip = "Стилизованное настенное покрытие в винтажном разрешении"),
-        ShopItem("sh_wp_forest", "Лесная панорама «Изумрудный бор»", 46, ShopCategory.WALLPAPER, "🌲", roomSlotType = RoomSlotType.WALLPAPER, happinessBoost = 0.35f, tip = "Природный пейзаж в глубоких зеленых тонах"),
-        ShopItem("sh_wp_city", "Урбанистическая панорама «Мегаполис»", 52, ShopCategory.WALLPAPER, "🌆", roomSlotType = RoomSlotType.WALLPAPER, happinessBoost = 0.45f, tip = "Вид на вечерний город с иллюминацией высотных зданий"),
-        ShopItem("sh_fl_wood", "Инженерный дубовый паркет", 0, ShopCategory.WALLPAPER, "🪵", roomSlotType = RoomSlotType.FLOOR, tip = "Классическое напольное покрытие из светлых пород древесины"),
-        ShopItem("sh_fl_dark", "Массивная доска «Темный орех»", 28, ShopCategory.WALLPAPER, "🪵", roomSlotType = RoomSlotType.FLOOR, happinessBoost = 0.20f, tip = "Премиальное покрытие глубокого благородного древесного оттенка"),
-        ShopItem("sh_fl_tatami", "Натуральные бамбуковые татами", 36, ShopCategory.WALLPAPER, "🎋", roomSlotType = RoomSlotType.FLOOR, happinessBoost = 0.25f, tip = "Экологичное напольное покрытие традиционного японского плетения"),
-        ShopItem("sh_fl_marble", "Полированный каррарский мрамор", 42, ShopCategory.WALLPAPER, "🏛️", roomSlotType = RoomSlotType.FLOOR, happinessBoost = 0.30f, tip = "Крупноформатная мраморная плитка с благородным рисунком прожилок"),
-        ShopItem("sh_fl_neon", "Светодиодная плитка CyberTech", 48, ShopCategory.WALLPAPER, "🔮", roomSlotType = RoomSlotType.FLOOR, happinessBoost = 0.35f, tip = "Высокотехнологичный пол с интегрированной контурной подсветкой"),
-        ShopItem("sh_fl_carpet", "Велюровый длинноворсовый ковролин", 38, ShopCategory.WALLPAPER, "🧶", roomSlotType = RoomSlotType.FLOOR, happinessBoost = 0.30f, tip = "Плотное звукоизолирующее покрытие повышенной мягкости"),
+        ShopItem("sh_wp_gray", "Светлые обои", 0, ShopCategory.WALLPAPER, "🧱", roomSlotType = RoomSlotType.WALLPAPER, tip = "Базовые стильные обои для комнаты"),
+        ShopItem("sh_wp_brick", "Кирпичная стена", 35, ShopCategory.WALLPAPER, "🧱", roomSlotType = RoomSlotType.WALLPAPER, happinessBoost = 0.25f, tip = "Модная кирпичная кладка в стиле лофт"),
+        ShopItem("sh_wp_space", "Звездный космос", 45, ShopCategory.WALLPAPER, "🌌", roomSlotType = RoomSlotType.WALLPAPER, happinessBoost = 0.35f, tip = "Мерцающие звезды и далекие галактики"),
+        ShopItem("sh_wp_clouds", "Нежные облака", 35, ShopCategory.WALLPAPER, "☁️", roomSlotType = RoomSlotType.WALLPAPER, happinessBoost = 0.25f, tip = "Воздушные пастельные облака"),
+        ShopItem("sh_wp_cyber", "Неоновые волны", 50, ShopCategory.WALLPAPER, "🌐", roomSlotType = RoomSlotType.WALLPAPER, happinessBoost = 0.40f, tip = "Светящиеся линии в стиле киберпанк"),
+        ShopItem("sh_wp_sunflower", "Поле подсолнухов", 40, ShopCategory.WALLPAPER, "🌻", roomSlotType = RoomSlotType.WALLPAPER, happinessBoost = 0.30f, tip = "Солнечные яркие цветы для хорошего настроения"),
+        ShopItem("sh_wp_sakura", "Цветущая сакура", 48, ShopCategory.WALLPAPER, "🌸", roomSlotType = RoomSlotType.WALLPAPER, happinessBoost = 0.40f, tip = "Нежные розовые лепестки сакуры"),
+        ShopItem("sh_wp_retro", "Горные вершины", 42, ShopCategory.WALLPAPER, "🏔️", roomSlotType = RoomSlotType.WALLPAPER, happinessBoost = 0.35f, tip = "Красивый закат над горным хребтом"),
+        ShopItem("sh_wp_forest", "Зеленый лес", 46, ShopCategory.WALLPAPER, "🌲", roomSlotType = RoomSlotType.WALLPAPER, happinessBoost = 0.35f, tip = "Уютные лесные мотивы и свежесть"),
+        ShopItem("sh_wp_city", "Ночной город", 52, ShopCategory.WALLPAPER, "🌆", roomSlotType = RoomSlotType.WALLPAPER, happinessBoost = 0.45f, tip = "Огни вечернего мегаполиса"),
+        ShopItem("sh_fl_wood", "Дубовый паркет", 0, ShopCategory.WALLPAPER, "🪵", roomSlotType = RoomSlotType.FLOOR, tip = "Классический теплый деревянный пол"),
+        ShopItem("sh_fl_dark", "Темный ламинат", 28, ShopCategory.WALLPAPER, "🪵", roomSlotType = RoomSlotType.FLOOR, happinessBoost = 0.20f, tip = "Благородное темное дерево"),
+        ShopItem("sh_fl_tatami", "Бамбуковый коврик", 36, ShopCategory.WALLPAPER, "🎋", roomSlotType = RoomSlotType.FLOOR, happinessBoost = 0.25f, tip = "Натуральное плетение из бамбука"),
+        ShopItem("sh_fl_marble", "Белый мрамор", 42, ShopCategory.WALLPAPER, "🏛️", roomSlotType = RoomSlotType.FLOOR, happinessBoost = 0.30f, tip = "Гладкий и сияющий мраморный пол"),
+        ShopItem("sh_fl_neon", "Неоновый пол", 48, ShopCategory.WALLPAPER, "🔮", roomSlotType = RoomSlotType.FLOOR, happinessBoost = 0.35f, tip = "Светящиеся плиты с мягким свечением"),
+        ShopItem("sh_fl_carpet", "Мягкий ковер", 38, ShopCategory.WALLPAPER, "🧶", roomSlotType = RoomSlotType.FLOOR, happinessBoost = 0.30f, tip = "Пушистый теплый ковер для уюта лапок"),
 
         // ==========================================
         // 4. ДЕКОР И ПОСТЕРЫ НА СТЕНУ
         // ==========================================
-        ShopItem("sh_dec_cert", "Квалификационный диплом инвестора", 30, ShopCategory.WALLPAPER, "📜", roomSlotType = RoomSlotType.POSTER, happinessBoost = 0.30f, isMandatory = false, tip = "Настенный документ в багетной раме с сургучной печатью"),
-        ShopItem("sh_dec_poster", "Коллекционный арт-постер", 25, ShopCategory.WALLPAPER, "🖼️", roomSlotType = RoomSlotType.POSTER, happinessBoost = 0.35f, isMandatory = false, tip = "Художественное настенное полотно в защищенном стеклянном багете"),
-        ShopItem("sh_dec_gold_medal", "Памятная золотая медаль", 35, ShopCategory.WALLPAPER, "🥇", roomSlotType = RoomSlotType.POSTER, happinessBoost = 0.40f, isMandatory = false, tip = "Награда высшей пробы на шелковой ленте для стены комнаты"),
-        ShopItem("sh_dec_star_award", "Настенная звезда достижений", 40, ShopCategory.WALLPAPER, "⭐", roomSlotType = RoomSlotType.POSTER, happinessBoost = 0.45f, isMandatory = false, tip = "Сверкающая звезда почета для настоящих лидеров накоплений"),
+        ShopItem("sh_dec_cert", "Диплом финансиста", 30, ShopCategory.WALLPAPER, "📜", roomSlotType = RoomSlotType.POSTER, happinessBoost = 0.30f, isMandatory = false, tip = "Красивый диплом в рамке на стену"),
+        ShopItem("sh_dec_poster", "Арт-картина", 25, ShopCategory.WALLPAPER, "🖼️", roomSlotType = RoomSlotType.POSTER, happinessBoost = 0.35f, isMandatory = false, tip = "Яркий постер с любимым героем"),
+        ShopItem("sh_dec_gold_medal", "Золотая медаль", 35, ShopCategory.WALLPAPER, "🥇", roomSlotType = RoomSlotType.POSTER, happinessBoost = 0.40f, isMandatory = false, tip = "Награда за успехи в накоплениях"),
+        ShopItem("sh_dec_star_award", "Звезда почета", 40, ShopCategory.WALLPAPER, "⭐", roomSlotType = RoomSlotType.POSTER, happinessBoost = 0.45f, isMandatory = false, tip = "Сверкающая звездочка для стены"),
 
         // ==========================================
         // 5. УКРАШЕНИЯ (ACCESSORIES) — 16 предметов
         // ==========================================
-        ShopItem("sh_acc_collar", "Кожаный ошейник с медальоном", 28, ShopCategory.ACCESSORIES, "🏷️", happinessBoost = 0.30f, isMandatory = false, tip = "Аксессуар из натуральной кожи с гравированным металлическим адресником"),
-        ShopItem("sh_acc_glasses", "Поляризационные солнцезащитные очки", 34, ShopCategory.ACCESSORIES, "🕶️", happinessBoost = 0.40f, isMandatory = false, tip = "Оптический аксессуар с надежной защитой от ультрафиолетового излучения"),
-        ShopItem("sh_acc_cap", "Фирменная бейсболка FinPet", 32, ShopCategory.ACCESSORIES, "🧢", happinessBoost = 0.35f, isMandatory = false, tip = "Головной убор из плотного хлопка с вышитой символикой"),
-        ShopItem("sh_acc_scarf", "Шерстяной вязаный шарф", 26, ShopCategory.ACCESSORIES, "🧣", happinessBoost = 0.30f, isMandatory = false, tip = "Теплый трикотажный шарф мелкой вязки с декоративными кистями"),
-        ShopItem("sh_acc_badge", "Нагрудный орден инвестора", 50, ShopCategory.ACCESSORIES, "⭐", happinessBoost = 0.60f, isMandatory = false, tip = "Металлический знак отличия за успехи в формировании капитала"),
-        ShopItem("sh_acc_crown", "Императорская золотая корона", 80, ShopCategory.ACCESSORIES, "👑", happinessBoost = 0.80f, isMandatory = false, tip = "Парадный ювелирный венец с драгоценными вставками и бархатом"),
-        ShopItem("sh_royal_mantle", "Бархатная церемониальная мантия", 80, ShopCategory.ACCESSORIES, "🧣", happinessBoost = 0.80f, isMandatory = false, tip = "Роскошное одеяние глубокого пурпурного цвета с меховой оторочкой"),
-        ShopItem("sh_royal_scepter", "Церемониальный золотой скипетр", 80, ShopCategory.ACCESSORIES, "🪄", happinessBoost = 0.80f, isMandatory = false, tip = "Символ финансового суверенитета и высшего мастерства накоплений"),
-        ShopItem("sh_acc_visor", "Оптический смарт-визор", 58, ShopCategory.ACCESSORIES, "🥽", happinessBoost = 0.65f, isMandatory = false, tip = "Гаджет дополненной реальности с проекционным интерфейсом"),
-        ShopItem("sh_acc_headband", "Спортивная головная повязка", 30, ShopCategory.ACCESSORIES, "🥷", happinessBoost = 0.35f, isMandatory = false, tip = "Эластичная тканевая повязка для тренировок и концентрации"),
-        ShopItem("sh_acc_cat_headphones", "Студийные стереонаушники", 52, ShopCategory.ACCESSORIES, "🎧", happinessBoost = 0.55f, isMandatory = false, tip = "Накладные мониторные наушники с объемным чистым звучанием"),
-        ShopItem("sh_acc_wizard_hat", "Академическая мантия и шляпа", 48, ShopCategory.ACCESSORIES, "🧙", happinessBoost = 0.50f, isMandatory = false, tip = "Традиционный головной убор магистра экономических наук"),
-        ShopItem("sh_acc_bowtie", "Атласный галстук-бабочка", 24, ShopCategory.ACCESSORIES, "🎀", happinessBoost = 0.30f, isMandatory = false, tip = "Классический элемент вечернего гардероба для торжественных приемов"),
-        ShopItem("sh_acc_emerald_gem", "Кулон с гидротермальным изумрудом", 65, ShopCategory.ACCESSORIES, "💎", happinessBoost = 0.70f, isMandatory = false, tip = "Ювелирное украшение на золотой цепочке тонкого плетения"),
-        ShopItem("sh_acc_flower_wreath", "Флористический венок из соцветий", 36, ShopCategory.ACCESSORIES, "🌸", happinessBoost = 0.40f, isMandatory = false, tip = "Декоративное плетеное украшение из живых цветов"),
-        ShopItem("sh_acc_pocket_watch", "Хронометр в золотом корпусе", 60, ShopCategory.ACCESSORIES, "⏱️", happinessBoost = 0.60f, isMandatory = false, tip = "Механический карманный секундомер с позолоченной цепочкой")
+        ShopItem("sh_acc_collar", "Ошейник с кулоном", 28, ShopCategory.ACCESSORIES, "🏷️", happinessBoost = 0.30f, isMandatory = false, tip = "Стильный ошейник с именным кулоном"),
+        ShopItem("sh_acc_glasses", "Солнечные очки", 34, ShopCategory.ACCESSORIES, "🕶️", happinessBoost = 0.40f, isMandatory = false, tip = "Модные темные очки от солнца"),
+        ShopItem("sh_acc_cap", "Крутая кепка", 32, ShopCategory.ACCESSORIES, "🧢", happinessBoost = 0.35f, isMandatory = false, tip = "Яркая бейсболка с козырьком"),
+        ShopItem("sh_acc_scarf", "Теплый шарфик", 26, ShopCategory.ACCESSORIES, "🧣", happinessBoost = 0.30f, isMandatory = false, tip = "Вязаный уютный шарфик"),
+        ShopItem("sh_acc_badge", "Орден чемпиона", 50, ShopCategory.ACCESSORIES, "⭐", happinessBoost = 0.60f, isMandatory = false, tip = "Блестящий значок за финансовые победы"),
+        ShopItem("sh_acc_crown", "Золотая корона", 80, ShopCategory.ACCESSORIES, "👑", happinessBoost = 0.80f, isMandatory = false, tip = "Настоящая корона для короля накоплений"),
+        ShopItem("sh_royal_mantle", "Королевская мантия", 80, ShopCategory.ACCESSORIES, "🧣", happinessBoost = 0.80f, isMandatory = false, tip = "Бархатная мантия благородного цвета"),
+        ShopItem("sh_royal_scepter", "Золотой скипетр", 80, ShopCategory.ACCESSORIES, "🪄", happinessBoost = 0.80f, isMandatory = false, tip = "Символ мастерства и мудрости"),
+        ShopItem("sh_acc_visor", "Кибер-очки", 58, ShopCategory.ACCESSORIES, "🥽", happinessBoost = 0.65f, isMandatory = false, tip = "Футуристические светящиеся очки"),
+        ShopItem("sh_acc_headband", "Спортивная повязка", 30, ShopCategory.ACCESSORIES, "🥷", happinessBoost = 0.35f, isMandatory = false, tip = "Удобная повязка для тренировок"),
+        ShopItem("sh_acc_cat_headphones", "Музыкальные наушники", 52, ShopCategory.ACCESSORIES, "🎧", happinessBoost = 0.55f, isMandatory = false, tip = "Наушники с мягкими амбушюрами"),
+        ShopItem("sh_acc_wizard_hat", "Шляпа магистра", 48, ShopCategory.ACCESSORIES, "🧙", happinessBoost = 0.50f, isMandatory = false, tip = "Шляпа знатока финансов"),
+        ShopItem("sh_acc_bowtie", "Галстук-бабочка", 24, ShopCategory.ACCESSORIES, "🎀", happinessBoost = 0.30f, isMandatory = false, tip = "Праздничная нарядная бабочка"),
+        ShopItem("sh_acc_emerald_gem", "Изумрудный кулон", 65, ShopCategory.ACCESSORIES, "💎", happinessBoost = 0.70f, isMandatory = false, tip = "Красивый сверкающий кулон на цепочке"),
+        ShopItem("sh_acc_flower_wreath", "Цветочный венок", 36, ShopCategory.ACCESSORIES, "🌸", happinessBoost = 0.40f, isMandatory = false, tip = "Весенний венок из свежих цветов"),
+        ShopItem("sh_acc_pocket_watch", "Карманные часики", 60, ShopCategory.ACCESSORIES, "⏱️", happinessBoost = 0.60f, isMandatory = false, tip = "Золотые карманные часы на цепочке")
     )
 
     private fun getBaseQuests(): List<FinancialQuest> = QuestsBank.getAll54Quests()
@@ -950,18 +950,6 @@ object GameRepository {
                 isConfirmed = false
             )
 
-            val tx = FinTransaction(
-                id = UUID.randomUUID().toString(),
-                title = "Карманные деньги на период $nextPeriodNumber",
-                amount = pocketMoney,
-                envelope = EnvelopeType.NEEDS,
-                isIncome = true,
-                timestampFormatted = getCurrentDateString(),
-                periodId = nextPeriodNumber,
-                note = "Периодический доход от родителей"
-            )
-            db?.addTransaction(tx)
-
             // Обработка банковского вклада под сложный процент (+20% в период)
             var newDepositAmount = state.bankDepositAmount
             var newDepositPeriods = state.bankDepositPeriodsLeft
@@ -1004,14 +992,13 @@ object GameRepository {
             }
 
             val updatedTransactions = buildList {
-                add(tx)
                 if (depositTx != null) add(depositTx)
                 addAll(state.transactions)
             }
 
             state.copy(
                 currentPeriod = nextPeriodNumber,
-                totalCoins = state.totalCoins + pocketMoney + bonusCoinsFromDeposit,
+                totalCoins = state.totalCoins + bonusCoinsFromDeposit,
                 bankDepositAmount = newDepositAmount,
                 bankDepositPeriodsLeft = newDepositPeriods,
                 totalBankInterestEarned = state.totalBankInterestEarned + interestEarnedThisPeriod,
@@ -1019,9 +1006,94 @@ object GameRepository {
                 pet = updatedPet,
                 isRoomLightOff = false, // с наступлением нового периода наступает утро
                 transactions = updatedTransactions,
-                activeDialog = GameDialog.PeriodCompleted(state.currentPeriod, summaryText, earnedExp, pocketMoney + bonusCoinsFromDeposit),
-                lastAdviceMessage = "Начался период $nextPeriodNumber: ${nextPeriodInfo.title}. Получено +$pocketMoney монет!" +
-                        if (bonusCoinsFromDeposit > 0) " И выплата по вкладу: +$bonusCoinsFromDeposit 🪙!" else ""
+                activeDialog = GameDialog.PeriodCompleted(state.currentPeriod, summaryText, earnedExp, bonusCoinsFromDeposit),
+                lastAdviceMessage = "Начался период $nextPeriodNumber: ${nextPeriodInfo.title}!" +
+                        if (bonusCoinsFromDeposit > 0) " Выплата по вкладу: +$bonusCoinsFromDeposit 🪙!" else ""
+            )
+        }
+        persistCurrentState()
+    }
+
+    fun setPeriod(periodNumber: Int) {
+        val targetPeriod = periodNumber.coerceIn(1, 5)
+        val periodInfo = GamePeriodRepository.getPeriod(targetPeriod)
+        val pocketMoney = periodInfo.pocketMoneyAmount
+
+        val newStage = when {
+            targetPeriod >= 5 -> EvolutionStage.MASTER
+            targetPeriod >= 3 -> EvolutionStage.TEEN
+            else -> EvolutionStage.BABY
+        }
+
+        val completedQuestsThreshold = (targetPeriod - 1) * 2
+
+        _gameState.update { state ->
+            val updatedQuests = state.quests.map { q ->
+                if (q.orderIndex <= completedQuestsThreshold) {
+                    q.copy(isCompleted = true, selectedOptionIndex = 0)
+                } else {
+                    q.copy(isCompleted = false, selectedOptionIndex = null)
+                }
+            }
+
+            val updatedPet = state.pet.copy(
+                level = targetPeriod,
+                evolutionStage = newStage,
+                energy = 1.0f,
+                hunger = 0.85f,
+                happiness = 0.90f,
+                currentMood = PetMood.HAPPY,
+                finScore = (50 + targetPeriod * 8).coerceIn(50, 95),
+                moodExplanation = "Период $targetPeriod: ${periodInfo.title} (${newStage.title})."
+            )
+
+            val newPlan = BudgetPeriodPlan(
+                periodId = targetPeriod,
+                availableAmount = pocketMoney,
+                needsPlan = (pocketMoney * 0.5).toInt(),
+                wantsPlan = (pocketMoney * 0.3).toInt(),
+                savingsPlan = (pocketMoney * 0.2).toInt(),
+                needsFact = 0,
+                wantsFact = 0,
+                savingsFact = 0,
+                isConfirmed = false
+            )
+
+            val summaryText = "🎓 Активирован Период $targetPeriod: ${periodInfo.title}!\n\n" +
+                    "🎯 Образовательная цель: ${periodInfo.educationalGoal}\n" +
+                    "🐾 Статус питомца: ${newStage.title} (Уровень $targetPeriod)\n\n" +
+                    when (targetPeriod) {
+                        1 -> "🌱 Знакомство с питомцем, базовые потребности и ведение бюджета."
+                        2 -> "📊 Доступно планирование бюджета по правилу 50/30/20 и учет реальных трат."
+                        3 -> "🏦 Разблокирован Банковский Сейф: вклады под 20% сложного процента!"
+                        4 -> "🛡️ Формирование финансовой подушки безопасности и защита от спонтанных покупок."
+                        else -> "👑 Высший статус: Мастер финансовой грамотности! Награды и золотой диплом на стене."
+                    }
+
+            state.copy(
+                currentPeriod = targetPeriod,
+                totalCoins = state.totalCoins,
+                budgetPlan = newPlan,
+                pet = updatedPet,
+                quests = updatedQuests,
+                isRoomLightOff = false,
+                activeDialog = GameDialog.PeriodCompleted(
+                    periodNumber = targetPeriod,
+                    summary = summaryText,
+                    earnedExp = 50 * targetPeriod,
+                    nextPocketMoney = 0
+                ),
+                lastAdviceMessage = "Начался период $targetPeriod: ${periodInfo.title}!"
+            )
+        }
+        persistCurrentState()
+    }
+
+    fun applyInteriorSet(wallpaperId: String, floorId: String) {
+        _gameState.update { state ->
+            state.copy(
+                equippedWallpaper = wallpaperId,
+                equippedFloor = floorId
             )
         }
         persistCurrentState()

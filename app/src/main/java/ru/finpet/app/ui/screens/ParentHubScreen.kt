@@ -1,11 +1,13 @@
 package ru.finpet.app.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,6 +31,7 @@ import kotlinx.coroutines.launch
 import ru.finpet.app.audio.SoundHapticManager
 import ru.finpet.app.data.GameRepository
 import ru.finpet.app.data.GameState
+import ru.finpet.app.model.GamePeriodRepository
 import ru.finpet.app.model.TaskStatus
 import ru.finpet.app.ui.components.CartoonButton
 import ru.finpet.app.ui.components.bounceClick
@@ -307,71 +310,102 @@ fun ParentHubScreen(
                     Icon(
                         imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                         contentDescription = "Назад",
-                        tint = BrandVioletPrimary
+                        tint = currentTheme.primaryColor
                     )
                 }
                 Column {
                     Text(
-                        text = "👨‍👩‍👧 Уголок родителя",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.ExtraBold,
-                        color = BrandVioletPrimary
+                        text = "Уголок родителя",
+                        fontFamily = UnboundedFamily,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = TextPrimary
                     )
                     Text(
                         text = "Игрок: ${state.playerName} • Питомец: ${state.pet.name}",
-                        fontSize = 13.sp,
+                        fontSize = 12.5.sp,
                         color = TextSecondary
                     )
                 }
             }
             IconButton(onClick = { isUnlocked = false }) {
-                Icon(Icons.Rounded.LockOpen, contentDescription = "Заблокировать", tint = BrandVioletPrimary)
+                Icon(Icons.Rounded.LockOpen, contentDescription = "Заблокировать", tint = currentTheme.primaryColor)
             }
         }
 
         // Карточка успехов ребенка
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(22.dp),
+            shape = RoundedCornerShape(16.dp),
             color = SurfaceLight,
-            shadowElevation = 2.dp,
-            border = androidx.compose.foundation.BorderStroke(1.dp, BrandLavender.copy(alpha = 0.25f))
+            border = BorderStroke(1.dp, OutlineLight)
         ) {
             Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("📈 Прогресс ребенка в игре", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = BrandVioletPrimary)
+                Text(
+                    text = "📈 Прогресс ребенка в игре",
+                    fontFamily = UnboundedFamily,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 13.5.sp,
+                    color = TextPrimary
+                )
 
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     Surface(
                         modifier = Modifier.weight(1f),
-                        shape = RoundedCornerShape(14.dp),
-                        color = SurfaceSubtle
+                        shape = RoundedCornerShape(12.dp),
+                        color = SurfaceSubtle,
+                        border = BorderStroke(1.dp, OutlineLight.copy(alpha = 0.5f))
                     ) {
                         Column(modifier = Modifier.padding(12.dp)) {
                             Text("Пройдено квестов:", fontSize = 11.sp, color = TextSecondary)
-                            Text("$completedQuestsCount из ${state.quests.size}", fontWeight = FontWeight.ExtraBold, fontSize = 18.sp, color = BrandVioletPrimary)
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                "$completedQuestsCount из ${state.quests.size}",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp,
+                                color = TextPrimary
+                            )
                         }
                     }
 
                     Surface(
                         modifier = Modifier.weight(1f),
-                        shape = RoundedCornerShape(14.dp),
-                        color = BrandPinkPastel
+                        shape = RoundedCornerShape(12.dp),
+                        color = SurfaceSubtle,
+                        border = BorderStroke(1.dp, OutlineLight.copy(alpha = 0.5f))
                     ) {
                         Column(modifier = Modifier.padding(12.dp)) {
                             Text("В копилке на мечту:", fontSize = 11.sp, color = TextSecondary)
-                            Text("${state.totalSavingsAmount} 🪙", fontWeight = FontWeight.ExtraBold, fontSize = 18.sp, color = BrandRoseWarm)
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                "${state.totalSavingsAmount} 🪙",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp,
+                                color = currentTheme.primaryColor
+                            )
                         }
                     }
                 }
 
                 Surface(
-                    shape = RoundedCornerShape(14.dp),
-                    color = SurfaceVariantLight,
+                    shape = RoundedCornerShape(12.dp),
+                    color = currentTheme.primaryColor.copy(alpha = 0.08f),
+                    border = BorderStroke(1.dp, currentTheme.primaryColor.copy(alpha = 0.2f)),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text("🌱 Стадия развития питомца: ${state.pet.evolutionStage.title}", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = BrandVioletPrimary)
-                        Text(state.pet.evolutionStage.description, fontSize = 12.sp, color = TextSecondary)
+                        Text(
+                            "🌱 Стадия развития питомца: ${state.pet.evolutionStage.title}",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 12.5.sp,
+                            color = currentTheme.primaryColor
+                        )
+                        Text(
+                            state.pet.evolutionStage.description,
+                            fontSize = 11.5.sp,
+                            lineHeight = 15.sp,
+                            color = TextSecondary
+                        )
                     }
                 }
             }
@@ -380,25 +414,24 @@ fun ParentHubScreen(
         // Управление поощрениями за реальные дела
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(22.dp),
+            shape = RoundedCornerShape(16.dp),
             color = SurfaceLight,
-            shadowElevation = 1.dp,
-            border = androidx.compose.foundation.BorderStroke(1.dp, BrandLavender.copy(alpha = 0.2f))
+            border = BorderStroke(1.dp, OutlineLight)
         ) {
-            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "⭐ Награда за дела по дому",
+                        text = "⭐ Задания и поощрения",
+                        fontFamily = UnboundedFamily,
                         fontWeight = FontWeight.Bold,
-                        fontSize = 14.sp,
-                        lineHeight = 17.sp,
-                        color = BrandVioletPrimary,
+                        fontSize = 13.5.sp,
+                        color = TextPrimary,
                         modifier = Modifier.weight(1f, fill = false),
-                        maxLines = 2,
+                        maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                     Spacer(modifier = Modifier.width(6.dp))
@@ -406,25 +439,23 @@ fun ParentHubScreen(
                         horizontalArrangement = Arrangement.spacedBy(6.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Button(
+                        OutlinedButton(
                             onClick = { showAddTaskDialog = true },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = SurfaceSubtle
-                            ),
-                            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
+                            border = BorderStroke(1.dp, OutlineLight),
+                            contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp),
                             shape = RoundedCornerShape(10.dp),
-                            modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 30.dp).bounceClick()
+                            modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 32.dp).bounceClick()
                         ) {
-                            Text("+ Дело", fontSize = 11.sp, color = TextPrimary, fontWeight = FontWeight.Bold, maxLines = 1, softWrap = false)
+                            Text("+ Дело", fontSize = 11.5.sp, color = TextPrimary, fontWeight = FontWeight.Bold, maxLines = 1, softWrap = false)
                         }
                         Button(
                             onClick = { showAwardDialog = true },
-                            colors = ButtonDefaults.buttonColors(containerColor = BrandButtonPrimary),
-                            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = currentTheme.primaryColor),
+                            contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp),
                             shape = RoundedCornerShape(10.dp),
-                            modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 30.dp).bounceClick()
+                            modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 32.dp).bounceClick()
                         ) {
-                            Text("+ Бонус", fontSize = 11.sp, color = Color.White, fontWeight = FontWeight.Bold, maxLines = 1, softWrap = false)
+                            Text("+ Бонус", fontSize = 11.5.sp, color = Color.White, fontWeight = FontWeight.Bold, maxLines = 1, softWrap = false)
                         }
                     }
                 }
@@ -434,7 +465,7 @@ fun ParentHubScreen(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(12.dp),
                         color = SurfaceSubtle,
-                        border = androidx.compose.foundation.BorderStroke(1.dp, BrandLavender.copy(alpha = 0.25f))
+                        border = BorderStroke(1.dp, OutlineLight)
                     ) {
                         Row(
                             modifier = Modifier
@@ -456,7 +487,7 @@ fun ParentHubScreen(
                                 Column(modifier = Modifier.weight(1f)) {
                                     Text(
                                         text = task.title,
-                                        fontWeight = FontWeight.SemiBold,
+                                        fontWeight = FontWeight.Medium,
                                         fontSize = 13.sp,
                                         color = TextPrimary,
                                         maxLines = 2,
@@ -467,7 +498,7 @@ fun ParentHubScreen(
                                     Text(
                                         text = "+${task.rewardCoins} 🪙",
                                         fontSize = 12.sp,
-                                        color = FinCoinGold,
+                                        color = StatGreenEmerald,
                                         fontWeight = FontWeight.Bold
                                     )
                                 }
@@ -478,12 +509,12 @@ fun ParentHubScreen(
                             if (task.status == TaskStatus.COMPLETED) {
                                 Surface(
                                     shape = RoundedCornerShape(8.dp),
-                                    color = FinGreenEmerald.copy(alpha = 0.15f),
-                                    border = androidx.compose.foundation.BorderStroke(1.dp, FinGreenEmerald.copy(alpha = 0.35f))
+                                    color = StatGreenEmerald.copy(alpha = 0.12f),
+                                    border = BorderStroke(1.dp, StatGreenEmerald.copy(alpha = 0.3f))
                                 ) {
                                     Text(
                                         text = "Начислено ✓",
-                                        color = FinGreenEmerald,
+                                        color = StatGreenEmerald,
                                         fontSize = 11.sp,
                                         fontWeight = FontWeight.Bold,
                                         maxLines = 1,
@@ -499,7 +530,7 @@ fun ParentHubScreen(
                                         onApproveTask(task.id)
                                     },
                                     colors = ButtonDefaults.buttonColors(
-                                        containerColor = StatGreenEmerald,
+                                        containerColor = currentTheme.primaryColor,
                                         contentColor = Color.White
                                     ),
                                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
@@ -525,15 +556,16 @@ fun ParentHubScreen(
         // Демо-режим и управление профилем
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(14.dp),
+            shape = RoundedCornerShape(16.dp),
             color = SurfaceLight,
-            border = androidx.compose.foundation.BorderStroke(1.dp, OutlineLight)
+            border = BorderStroke(1.dp, OutlineLight)
         ) {
-            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(
                     text = "Панель управления (Демо)",
+                    fontFamily = UnboundedFamily,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp,
+                    fontSize = 13.5.sp,
                     color = TextPrimary
                 )
 
@@ -549,14 +581,14 @@ fun ParentHubScreen(
                             fontSize = 13.sp,
                             color = TextPrimary,
                             maxLines = 1,
-                            overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                            overflow = TextOverflow.Ellipsis
                         )
                         Text(
                             text = "Мгновенный переход между периодами",
                             fontSize = 11.sp,
                             color = TextSecondary,
                             maxLines = 1,
-                            overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
@@ -568,6 +600,109 @@ fun ParentHubScreen(
                             onToggleDemoMode(it)
                         }
                     )
+                }
+
+                // Кнопки переключения игровых периодов для демонстрации
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = "ВЫБОР ИГРОВОГО ПЕРИОДА:",
+                        fontFamily = UnboundedFamily,
+                        fontSize = 10.5.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = TextSecondary
+                    )
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .horizontalScroll(rememberScrollState()),
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        val periodTitles = listOf(
+                            1 to "1: Малыш 🌱",
+                            2 to "2: Бюджет 📊",
+                            3 to "3: Вклады 🏦",
+                            4 to "4: Подушка 🛡️",
+                            5 to "5: Мастер 👑"
+                        )
+
+                        periodTitles.forEach { (pNum, pTitle) ->
+                            val isCurrent = state.currentPeriod == pNum
+                            Surface(
+                                shape = RoundedCornerShape(10.dp),
+                                color = if (isCurrent) currentTheme.primaryColor else SurfaceSubtle,
+                                border = BorderStroke(1.dp, if (isCurrent) currentTheme.primaryColor else OutlineLight),
+                                modifier = Modifier.bounceClick {
+                                    SoundHapticManager.performSuccessHaptic()
+                                    GameRepository.setPeriod(pNum)
+                                }
+                            ) {
+                                Text(
+                                    text = pTitle,
+                                    fontFamily = UnboundedFamily,
+                                    fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Medium,
+                                    fontSize = 11.sp,
+                                    color = if (isCurrent) Color.White else TextPrimary,
+                                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
+                                )
+                            }
+                        }
+                    }
+
+                    val currentPeriodInfo = GamePeriodRepository.getPeriod(state.currentPeriod)
+                    Surface(
+                        shape = RoundedCornerShape(12.dp),
+                        color = currentTheme.primaryColor.copy(alpha = 0.08f),
+                        border = BorderStroke(1.dp, currentTheme.primaryColor.copy(alpha = 0.2f)),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "Период ${state.currentPeriod}: ${currentPeriodInfo.title}",
+                                    fontFamily = UnboundedFamily,
+                                    fontSize = 11.5.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = currentTheme.primaryColor
+                                )
+                                Text(
+                                    text = "Уровень ${state.currentPeriod}",
+                                    fontFamily = UnboundedFamily,
+                                    fontSize = 11.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = currentTheme.primaryColor
+                                )
+                            }
+                            Text(
+                                text = "🎯 Цель: ${currentPeriodInfo.educationalGoal}",
+                                fontSize = 11.5.sp,
+                                lineHeight = 15.sp,
+                                color = TextSecondary
+                            )
+                        }
+                    }
+
+                    // Кнопка подведения итогов и перехода к следующему периоду прямо из хаба
+                    if (state.currentPeriod < 5) {
+                        CartoonButton(
+                            text = "Завершить период ${state.currentPeriod} и перейти к следующему 🏆",
+                            onClick = {
+                                SoundHapticManager.performSuccessHaptic()
+                                GameRepository.advanceToNextPeriod()
+                            },
+                            containerColor = currentTheme.primaryColor,
+                            height = 42.dp,
+                            fontSize = 11.5.sp,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
                 }
 
                 HorizontalDivider(color = OutlineLight, thickness = 1.dp)
@@ -595,9 +730,10 @@ fun ParentHubScreen(
                     OutlinedButton(
                         onClick = { showChangePinDialog = true },
                         shape = RoundedCornerShape(10.dp),
+                        border = BorderStroke(1.dp, OutlineLight),
                         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
                     ) {
-                        Text("Сменить PIN", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                        Text("Сменить PIN", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = TextPrimary)
                     }
                 }
 
@@ -610,19 +746,20 @@ fun ParentHubScreen(
                         .fillMaxWidth()
                         .height(46.dp),
                     shape = RoundedCornerShape(10.dp),
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = TextPrimary),
-                    border = androidx.compose.foundation.BorderStroke(1.dp, OutlineLight),
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = DangerRed),
+                    border = BorderStroke(1.dp, OutlineLight),
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp)
                 ) {
-                    Icon(Icons.Rounded.Refresh, contentDescription = null, modifier = Modifier.size(16.dp), tint = TextPrimary)
+                    Icon(Icons.Rounded.Refresh, contentDescription = null, modifier = Modifier.size(16.dp), tint = DangerRed)
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
                         text = "Сбросить профиль к началу",
                         fontWeight = FontWeight.Bold,
                         fontSize = 13.sp,
+                        color = DangerRed,
                         maxLines = 1,
                         softWrap = false,
-                        overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }
@@ -636,7 +773,7 @@ fun ParentHubScreen(
 
         AlertDialog(
             onDismissRequest = { showAddTaskDialog = false },
-            title = { Text("Новое задание для ребенка 📝", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = BrandVioletPrimary) },
+            title = { Text("Новое задание для ребенка 📝", fontFamily = UnboundedFamily, fontWeight = FontWeight.Bold, fontSize = 16.sp, color = TextPrimary) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     OutlinedTextField(
@@ -667,7 +804,7 @@ fun ParentHubScreen(
                     },
                     enabled = taskTitle.isNotBlank(),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = BrandButtonPrimary,
+                        containerColor = currentTheme.primaryColor,
                         contentColor = Color.White
                     )
                 ) {
@@ -687,7 +824,7 @@ fun ParentHubScreen(
 
         AlertDialog(
             onDismissRequest = { showAwardDialog = false },
-            title = { Text("Поощрение ребенка 🪙", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = BrandVioletPrimary) },
+            title = { Text("Поощрение ребенка 🪙", fontFamily = UnboundedFamily, fontWeight = FontWeight.Bold, fontSize = 16.sp, color = TextPrimary) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     OutlinedTextField(
@@ -717,7 +854,7 @@ fun ParentHubScreen(
                         showAwardDialog = false
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = BrandButtonPrimary,
+                        containerColor = currentTheme.primaryColor,
                         contentColor = Color.White
                     )
                 ) {
@@ -734,11 +871,13 @@ fun ParentHubScreen(
     if (showResetConfirmDialog) {
         AlertDialog(
             onDismissRequest = { showResetConfirmDialog = false },
-            title = { Text("Сбросить данные профиля?", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = BrandVioletPrimary) },
+            title = { Text("Сбросить данные профиля?", fontFamily = UnboundedFamily, fontWeight = FontWeight.Bold, fontSize = 16.sp, color = TextPrimary) },
             text = {
                 Text(
                     "Локальная база данных будет очищена. Приложение вернется к Шагу 1 сценария (онбординг и создание питомца).",
-                    fontSize = 14.sp
+                    fontSize = 13.5.sp,
+                    lineHeight = 18.sp,
+                    color = TextSecondary
                 )
             },
             confirmButton = {
@@ -749,7 +888,7 @@ fun ParentHubScreen(
                         isUnlocked = false
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = BrandButtonPrimary,
+                        containerColor = DangerRed,
                         contentColor = Color.White
                     )
                 ) {

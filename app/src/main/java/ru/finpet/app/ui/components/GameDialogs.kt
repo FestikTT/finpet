@@ -400,32 +400,34 @@ fun GameDialogHost(
                             lineHeight = 18.sp,
                             color = TextPrimary
                         )
-                        Surface(
-                            shape = RoundedCornerShape(10.dp),
-                            color = SurfaceSubtle,
-                            border = BorderStroke(1.dp, OutlineLight),
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Row(
-                                modifier = Modifier.padding(10.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
+                        if (activeDialog.nextPocketMoney > 0) {
+                            Surface(
+                                shape = RoundedCornerShape(10.dp),
+                                color = SurfaceSubtle,
+                                border = BorderStroke(1.dp, OutlineLight),
+                                modifier = Modifier.fillMaxWidth()
                             ) {
-                                Text(
-                                    text = "Карманные деньги на новый период:",
-                                    fontSize = 12.sp,
-                                    lineHeight = 16.sp,
-                                    color = TextSecondary,
-                                    modifier = Modifier.weight(1f)
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(
-                                    text = "+${activeDialog.nextPocketMoney} 🪙",
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = BrandVioletPrimary,
-                                    softWrap = false
-                                )
+                                Row(
+                                    modifier = Modifier.padding(10.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = "Выплата по вкладу:",
+                                        fontSize = 12.sp,
+                                        lineHeight = 16.sp,
+                                        color = TextSecondary,
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(
+                                        text = "+${activeDialog.nextPocketMoney} 🪙",
+                                        fontSize = 14.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = StatGreenEmerald,
+                                        softWrap = false
+                                    )
+                                }
                             }
                         }
                     }

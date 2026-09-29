@@ -85,19 +85,6 @@ fun PetRoomScreen(
                     }
                 },
                 actions = {
-                    // Переключатель процедурной Lo-Fi музыки
-                    IconButton(
-                        onClick = {
-                            SoundHapticManager.performClickHaptic()
-                            GameRepository.toggleMusic()
-                        }
-                    ) {
-                        Text(
-                            text = if (state.isMusicEnabled) "🎵" else "🔇",
-                            fontSize = 18.sp
-                        )
-                    }
-
                     // Кнопка банковского сейфа
                     IconButton(
                         onClick = {
@@ -462,6 +449,37 @@ fun PetRoomScreen(
     }
 }
 
+private data class InteriorPreset(
+    val title: String,
+    val icon: String,
+    val wallpaperId: String,
+    val floorId: String,
+    val description: String,
+    val color: Color
+)
+
+private fun getItemColorSwatch(id: String): Color? {
+    return when (id) {
+        "sh_wp_gray" -> Color(0xFF94A3B8)
+        "sh_wp_brick" -> Color(0xFF8D493A)
+        "sh_wp_space" -> Color(0xFF1E1B4B)
+        "sh_wp_clouds" -> Color(0xFFBAE6FD)
+        "sh_wp_cyber" -> Color(0xFF00E5FF)
+        "sh_wp_sunflower" -> Color(0xFFFACC15)
+        "sh_wp_sakura" -> Color(0xFFFBCFE8)
+        "sh_wp_retro" -> Color(0xFF4C1D95)
+        "sh_wp_forest" -> Color(0xFF065F46)
+        "sh_wp_city" -> Color(0xFF1E1B4B)
+        "sh_fl_wood" -> Color(0xFFD4A373)
+        "sh_fl_dark" -> Color(0xFF3E2723)
+        "sh_fl_tatami" -> Color(0xFFC4B889)
+        "sh_fl_marble" -> Color(0xFFE2E8F0)
+        "sh_fl_neon" -> Color(0xFF00E5FF)
+        "sh_fl_carpet" -> Color(0xFFF472B6)
+        else -> null
+    }
+}
+
 @Composable
 private fun RoomCustomizerDialog(
     state: GameState,
@@ -472,16 +490,38 @@ private fun RoomCustomizerDialog(
 ) {
     val currentTheme = LocalAppTheme.current
     val dialogTabs = remember {
+        listOf("Сеты 🛋️", "Обои 🎨", "Пол 🪵", "Постеры 🖼️")
+    }
+    var selectedTabIdx by remember { mutableIntStateOf(0) }
+
+    val interiorPresets = remember {
         listOf(
-            RoomSlotType.WALLPAPER to "Обои 🎨",
-            RoomSlotType.FLOOR to "Пол 🪵",
-            RoomSlotType.POSTER to "Постеры 🖼️"
+            InteriorPreset("Сканди-уют", "☕", "sh_wp_gray", "sh_fl_wood", "Светлые стены и дубовый теплый паркет", Color(0xFF94A3B8)),
+            InteriorPreset("Цветущая Сакура", "🌸", "sh_wp_sakura", "sh_fl_carpet", "Нежно-розовые стены с лепестками и пушистый ковер", Color(0xFFF472B6)),
+            InteriorPreset("Космос", "🚀", "sh_wp_space", "sh_fl_dark", "Звездная туманность и благородный темный ламинат", Color(0xFF6366F1)),
+            InteriorPreset("Неоновый Кибер", "⚡", "sh_wp_cyber", "sh_fl_neon", "Цифровая матрица и светящаяся бирюзовая плитка", Color(0xFF00E5FF)),
+            InteriorPreset("Ночной Город", "🌃", "sh_wp_city", "sh_fl_marble", "Огни небоскребов и зеркальный мраморный пол", Color(0xFF38BDF8)),
+            InteriorPreset("Японский Дзен", "🎋", "sh_wp_clouds", "sh_fl_tatami", "Пастельное небо и натуральные бамбуковые татами", Color(0xFF10B981)),
+            InteriorPreset("Солнечное Лето", "🌻", "sh_wp_sunflower", "sh_fl_tatami", "Золотые подсолнухи и теплое бамбуковое покрытие", Color(0xFFF59E0B)),
+            InteriorPreset("Хвойный Лес", "🌲", "sh_wp_forest", "sh_fl_dark", "Светлячки среди сосен и глубокий темный пол", Color(0xFF059669)),
+            InteriorPreset("Ретро Синтвейв", "🕹️", "sh_wp_retro", "sh_fl_marble", "Закатное солнце 80-х и глянцевый мрамор", Color(0xFFD946EF)),
+            InteriorPreset("Уютный Лофт", "🧱", "sh_wp_brick", "sh_fl_wood", "Кирпичная кладка и классический дубовый паркет", Color(0xFFEA580C))
         )
     }
-    var selectedTab by remember { mutableStateOf(RoomSlotType.WALLPAPER) }
 
-    val slotItems = remember(state.shopItems, selectedTab) {
-        state.shopItems.filter { it.roomSlotType == selectedTab }
+    val selectedSlotType = when (selectedTabIdx) {
+        1 -> RoomSlotType.WALLPAPER
+        2 -> RoomSlotType.FLOOR
+        3 -> RoomSlotType.POSTER
+        else -> null
+    }
+
+    val slotItems = remember(state.shopItems, selectedSlotType) {
+        if (selectedSlotType != null) {
+            state.shopItems.filter { it.roomSlotType == selectedSlotType }
+        } else {
+            emptyList()
+        }
     }
 
     AlertDialog(
@@ -513,10 +553,10 @@ private fun RoomCustomizerDialog(
                         .horizontalScroll(rememberScrollState()),
                     horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
-                    dialogTabs.forEach { (slot, title) ->
-                        val isSelected = selectedTab == slot
+                    dialogTabs.forEachIndexed { index, title ->
+                        val isSelected = selectedTabIdx == index
                         Surface(
-                            modifier = Modifier.bounceClick { selectedTab = slot },
+                            modifier = Modifier.bounceClick { selectedTabIdx = index },
                             shape = RoundedCornerShape(10.dp),
                             color = if (isSelected) currentTheme.primaryColor else SurfaceSubtle,
                             border = BorderStroke(1.dp, if (isSelected) currentTheme.primaryColor else OutlineLight)
@@ -533,15 +573,119 @@ private fun RoomCustomizerDialog(
                     }
                 }
 
-                // Сетка предметов выбранного слота
+                // Список готовых сетов или предметов выбранного слота
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(max = 280.dp)
+                        .heightIn(max = 290.dp)
                         .verticalScroll(rememberScrollState()),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    if (slotItems.isEmpty()) {
+                    if (selectedTabIdx == 0) {
+                        // Готовые стильные сеты
+                        interiorPresets.forEach { preset ->
+                            val isEquipped = state.equippedWallpaper == preset.wallpaperId && state.equippedFloor == preset.floorId
+                            Surface(
+                                shape = RoundedCornerShape(12.dp),
+                                color = if (isEquipped) currentTheme.bubbleBg else SurfaceLight,
+                                border = BorderStroke(
+                                    width = if (isEquipped) 2.dp else 1.dp,
+                                    color = if (isEquipped) currentTheme.primaryColor else OutlineLight
+                                ),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(10.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Row(
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .padding(end = 8.dp),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                    ) {
+                                        Text(preset.icon, fontSize = 24.sp)
+                                        Column(modifier = Modifier.weight(1f)) {
+                                            Row(
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                            ) {
+                                                Text(
+                                                    text = preset.title,
+                                                    fontFamily = UnboundedFamily,
+                                                    fontWeight = FontWeight.Bold,
+                                                    fontSize = 12.sp,
+                                                    color = TextPrimary,
+                                                    maxLines = 1,
+                                                    overflow = TextOverflow.Ellipsis
+                                                )
+                                                Surface(
+                                                    shape = CircleShape,
+                                                    color = preset.color,
+                                                    border = BorderStroke(1.dp, Color(0x30000000)),
+                                                    modifier = Modifier.size(10.dp)
+                                                ) {}
+                                            }
+                                            Text(
+                                                text = preset.description,
+                                                fontSize = 9.5.sp,
+                                                color = TextSecondary,
+                                                maxLines = 2,
+                                                overflow = TextOverflow.Ellipsis
+                                            )
+                                        }
+                                    }
+
+                                    if (isEquipped) {
+                                        Surface(
+                                            shape = RoundedCornerShape(8.dp),
+                                            color = StatGreenEmerald.copy(alpha = 0.15f),
+                                            border = BorderStroke(1.dp, StatGreenEmerald.copy(alpha = 0.4f)),
+                                            modifier = Modifier.height(32.dp)
+                                        ) {
+                                            Box(
+                                                contentAlignment = Alignment.Center,
+                                                modifier = Modifier.padding(horizontal = 10.dp)
+                                            ) {
+                                                Text(
+                                                    text = "Активен ✓",
+                                                    fontSize = 10.5.sp,
+                                                    fontWeight = FontWeight.Bold,
+                                                    color = StatGreenEmerald
+                                                )
+                                            }
+                                        }
+                                    } else {
+                                        Button(
+                                            onClick = {
+                                                SoundHapticManager.performSuccessHaptic()
+                                                GameRepository.applyInteriorSet(preset.wallpaperId, preset.floorId)
+                                            },
+                                            shape = RoundedCornerShape(8.dp),
+                                            colors = ButtonDefaults.buttonColors(
+                                                containerColor = currentTheme.primaryColor
+                                            ),
+                                            contentPadding = PaddingValues(horizontal = 10.dp, vertical = 0.dp),
+                                            modifier = Modifier
+                                                .height(32.dp)
+                                                .defaultMinSize(minWidth = 72.dp)
+                                        ) {
+                                            Text(
+                                                text = "Выбрать",
+                                                fontSize = 11.sp,
+                                                fontWeight = FontWeight.Bold,
+                                                color = Color.White
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } else if (slotItems.isEmpty()) {
                         Text(
                             text = "В этой категории пока нет предметов",
                             fontSize = 12.sp,
@@ -551,10 +695,11 @@ private fun RoomCustomizerDialog(
                     } else {
                         slotItems.forEach { item ->
                             val isOwned = state.ownedRoomItemIds.contains(item.id) || item.price == 0
-                            val isEquipped = when (selectedTab) {
+                            val isEquipped = when (selectedSlotType) {
                                 RoomSlotType.WALLPAPER -> state.equippedWallpaper == item.id
                                 RoomSlotType.FLOOR -> state.equippedFloor == item.id
                                 RoomSlotType.POSTER -> state.equippedPoster == item.id
+                                else -> false
                             }
 
                             Surface(
@@ -593,15 +738,29 @@ private fun RoomCustomizerDialog(
                                         }
 
                                         Column(modifier = Modifier.weight(1f)) {
-                                            Text(
-                                                text = item.name,
-                                                fontFamily = UnboundedFamily,
-                                                fontWeight = FontWeight.Bold,
-                                                fontSize = 12.sp,
-                                                color = TextPrimary,
-                                                maxLines = 1,
-                                                overflow = TextOverflow.Ellipsis
-                                            )
+                                            Row(
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                            ) {
+                                                Text(
+                                                    text = item.name,
+                                                    fontFamily = UnboundedFamily,
+                                                    fontWeight = FontWeight.Bold,
+                                                    fontSize = 12.sp,
+                                                    color = TextPrimary,
+                                                    maxLines = 1,
+                                                    overflow = TextOverflow.Ellipsis
+                                                )
+                                                val swatch = getItemColorSwatch(item.id)
+                                                if (swatch != null) {
+                                                    Surface(
+                                                        shape = CircleShape,
+                                                        color = swatch,
+                                                        border = BorderStroke(1.dp, Color(0x30000000)),
+                                                        modifier = Modifier.size(10.dp)
+                                                    ) {}
+                                                }
+                                            }
                                             if (item.tip.isNotBlank()) {
                                                 Text(
                                                     text = item.tip,
@@ -621,32 +780,51 @@ private fun RoomCustomizerDialog(
                                         }
                                     }
 
-                                    // Кнопка действия (Надеть / Снять / В магазин)
+                                    // Кнопка действия (Надеть / Применено / В магазин)
                                     if (isOwned) {
-                                        Button(
-                                            onClick = {
-                                                SoundHapticManager.performClickHaptic()
-                                                if (isEquipped) {
-                                                    onUnequip(selectedTab)
-                                                } else {
-                                                    onEquip(item.id, selectedTab)
+                                        if (isEquipped) {
+                                            Surface(
+                                                shape = RoundedCornerShape(8.dp),
+                                                color = StatGreenEmerald.copy(alpha = 0.15f),
+                                                border = BorderStroke(1.dp, StatGreenEmerald.copy(alpha = 0.4f)),
+                                                modifier = Modifier.height(32.dp)
+                                            ) {
+                                                Box(
+                                                    contentAlignment = Alignment.Center,
+                                                    modifier = Modifier.padding(horizontal = 10.dp)
+                                                ) {
+                                                    Text(
+                                                        text = "Применено ✓",
+                                                        fontSize = 10.5.sp,
+                                                        fontWeight = FontWeight.Bold,
+                                                        color = StatGreenEmerald
+                                                    )
                                                 }
-                                            },
-                                            shape = RoundedCornerShape(8.dp),
-                                            colors = ButtonDefaults.buttonColors(
-                                                containerColor = if (isEquipped) Color(0xFFDC2626) else currentTheme.primaryColor
-                                            ),
-                                            contentPadding = PaddingValues(horizontal = 10.dp, vertical = 0.dp),
-                                            modifier = Modifier
-                                                .height(32.dp)
-                                                .defaultMinSize(minWidth = 72.dp)
-                                        ) {
-                                            Text(
-                                                text = if (isEquipped) "Снять" else "Надеть",
-                                                fontSize = 11.sp,
-                                                fontWeight = FontWeight.Bold,
-                                                color = Color.White
-                                            )
+                                            }
+                                        } else {
+                                            Button(
+                                                onClick = {
+                                                    SoundHapticManager.performClickHaptic()
+                                                    if (selectedSlotType != null) {
+                                                        onEquip(item.id, selectedSlotType)
+                                                    }
+                                                },
+                                                shape = RoundedCornerShape(8.dp),
+                                                colors = ButtonDefaults.buttonColors(
+                                                    containerColor = currentTheme.primaryColor
+                                                ),
+                                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 0.dp),
+                                                modifier = Modifier
+                                                    .height(32.dp)
+                                                    .defaultMinSize(minWidth = 72.dp)
+                                            ) {
+                                                Text(
+                                                    text = "Надеть",
+                                                    fontSize = 11.sp,
+                                                    fontWeight = FontWeight.Bold,
+                                                    color = Color.White
+                                                )
+                                            }
                                         }
                                     } else {
                                         Button(

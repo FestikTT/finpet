@@ -1,6 +1,7 @@
 package ru.finpet.app.ui.screens
 
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -9,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Add
@@ -21,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,6 +45,8 @@ fun GoalsScreen(
 ) {
     val activeGoal = state.activeGoal
     var showCreateDialog by remember { mutableStateOf(false) }
+    var showDepositDialog by remember { mutableStateOf(false) }
+    var showWithdrawDialog by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -181,13 +186,13 @@ fun GoalsScreen(
                         )
                     }
 
-                    // Кнопки пополнения и снятия (строго фиксированная высота 42dp, однострочный текст)
+                    // Кнопки пополнения и снятия произвольной суммы
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Button(
-                            onClick = { onDeposit(20) },
+                            onClick = { showDepositDialog = true },
                             enabled = state.totalCoins > 0 && !activeGoal.isAchieved,
                             modifier = Modifier
                                 .weight(1f)
@@ -200,36 +205,40 @@ fun GoalsScreen(
                             ),
                             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)
                         ) {
+                            Icon(Icons.Rounded.Add, contentDescription = null, modifier = Modifier.size(16.dp))
+                            Spacer(Modifier.width(4.dp))
                             Text(
-                                text = "Отложить +20 🪙",
-                                fontSize = 11.5.sp,
+                                text = "Отложить 🪙",
+                                fontSize = 12.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White,
                                 maxLines = 1,
                                 softWrap = false,
-                                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
 
                         OutlinedButton(
-                            onClick = { onRequestWithdraw(15) },
+                            onClick = { showWithdrawDialog = true },
                             enabled = activeGoal.currentAmount > 0,
                             modifier = Modifier
                                 .weight(1f)
                                 .height(44.dp)
                                 .bounceClick(),
                             shape = RoundedCornerShape(12.dp),
-                            border = androidx.compose.foundation.BorderStroke(1.2.dp, OutlineLight),
+                            border = BorderStroke(1.2.dp, OutlineLight),
                             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)
                         ) {
+                            Icon(Icons.Rounded.Remove, contentDescription = null, modifier = Modifier.size(16.dp), tint = BrandRoseWarm)
+                            Spacer(Modifier.width(4.dp))
                             Text(
-                                text = "Снять 15 🪙",
-                                fontSize = 11.5.sp,
+                                text = "Снять 🪙",
+                                fontSize = 12.sp,
                                 color = BrandRoseWarm,
                                 fontWeight = FontWeight.Bold,
                                 maxLines = 1,
                                 softWrap = false,
-                                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
                     }
@@ -397,6 +406,241 @@ fun GoalsScreen(
                         maxLines = 1,
                         softWrap = false
                     )
+                }
+            }
+        )
+    }
+
+    // Диалог пополнения цели на свою сумму
+    if (showDepositDialog && activeGoal != null) {
+        var depositInput by remember { mutableStateOf("20") }
+        val depositVal = depositInput.toIntOrNull() ?: 0
+        val maxAvailable = state.totalCoins
+        val isValid = depositVal > 0 && depositVal <= maxAvailable
+
+        AlertDialog(
+            onDismissRequest = { showDepositDialog = false },
+            title = {
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(activeGoal.icon, fontSize = 22.sp)
+                    Text("Пополнить копилку 🪙", fontWeight = FontWeight.Bold, fontSize = 17.sp, color = BrandVioletPrimary)
+                }
+            },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Text(
+                        text = "Цель: ${activeGoal.title}\nНакоплено: ${activeGoal.currentAmount} из ${activeGoal.targetAmount} 🪙",
+                        fontSize = 13.sp,
+                        color = TextSecondary
+                    )
+
+                    Surface(
+                        shape = RoundedCornerShape(10.dp),
+                        color = SurfaceSubtle,
+                        border = BorderStroke(1.dp, OutlineLight),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text("Доступно в кошельке:", fontSize = 12.sp, color = TextSecondary)
+                            Text("$maxAvailable 🪙", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = StatGreenEmerald)
+                        }
+                    }
+
+                    OutlinedTextField(
+                        value = depositInput,
+                        onValueChange = { newValue ->
+                            if (newValue.isEmpty() || newValue.all { it.isDigit() }) {
+                                depositInput = newValue
+                            }
+                        },
+                        label = { Text("Сумма пополнения") },
+                        placeholder = { Text("Например: 35") },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        singleLine = true,
+                        isError = depositVal > maxAvailable || (depositInput.isNotEmpty() && depositVal <= 0),
+                        supportingText = {
+                            if (depositVal > maxAvailable) {
+                                Text("Недостаточно монет в кошельке", color = BrandRoseWarm, fontSize = 11.sp)
+                            } else if (depositInput.isNotEmpty() && depositVal <= 0) {
+                                Text("Введите сумму больше 0", color = BrandRoseWarm, fontSize = 11.sp)
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    // Быстрый выбор сумм
+                    Text("Быстрый выбор:", fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = TextPrimary)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .horizontalScroll(rememberScrollState()),
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        listOf(10, 20, 50, 100).forEach { preset ->
+                            SuggestionChip(
+                                onClick = { depositInput = preset.toString() },
+                                label = { Text("+$preset 🪙", fontSize = 11.sp) },
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                        }
+                        if (maxAvailable > 0) {
+                            SuggestionChip(
+                                onClick = { depositInput = maxAvailable.toString() },
+                                label = { Text("Все ($maxAvailable)", fontSize = 11.sp, fontWeight = FontWeight.Bold) },
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        if (isValid) {
+                            onDeposit(depositVal)
+                            showDepositDialog = false
+                        }
+                    },
+                    enabled = isValid,
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = BrandButtonPrimary,
+                        contentColor = Color.White
+                    ),
+                    modifier = Modifier.height(44.dp).bounceClick()
+                ) {
+                    Text(
+                        text = if (depositVal > 0) "Внести $depositVal 🪙" else "Внести",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 13.sp,
+                        color = Color.White
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDepositDialog = false }, modifier = Modifier.height(44.dp)) {
+                    Text("Отмена", color = TextSecondary, fontSize = 13.sp)
+                }
+            }
+        )
+    }
+
+    // Диалог снятия из цели своей суммы
+    if (showWithdrawDialog && activeGoal != null) {
+        var withdrawInput by remember { mutableStateOf("15") }
+        val withdrawVal = withdrawInput.toIntOrNull() ?: 0
+        val maxInGoal = activeGoal.currentAmount
+        val isValid = withdrawVal > 0 && withdrawVal <= maxInGoal
+
+        AlertDialog(
+            onDismissRequest = { showWithdrawDialog = false },
+            title = {
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(activeGoal.icon, fontSize = 22.sp)
+                    Text("Снять из копилки 🪙", fontWeight = FontWeight.Bold, fontSize = 17.sp, color = BrandRoseWarm)
+                }
+            },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Text(
+                        text = "Цель: ${activeGoal.title}\nВ копилке накоплено: $maxInGoal 🪙",
+                        fontSize = 13.sp,
+                        color = TextSecondary
+                    )
+
+                    Surface(
+                        shape = RoundedCornerShape(10.dp),
+                        color = SurfaceSubtle,
+                        border = BorderStroke(1.dp, OutlineLight),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = "💡 Монеты вернутся в твой свободный кошелек, но прогресс цели уменьшится.",
+                            fontSize = 11.5.sp,
+                            lineHeight = 15.sp,
+                            color = TextSecondary,
+                            modifier = Modifier.padding(10.dp)
+                        )
+                    }
+
+                    OutlinedTextField(
+                        value = withdrawInput,
+                        onValueChange = { newValue ->
+                            if (newValue.isEmpty() || newValue.all { it.isDigit() }) {
+                                withdrawInput = newValue
+                            }
+                        },
+                        label = { Text("Сколько монет снять") },
+                        placeholder = { Text("Например: 15") },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        singleLine = true,
+                        isError = withdrawVal > maxInGoal || (withdrawInput.isNotEmpty() && withdrawVal <= 0),
+                        supportingText = {
+                            if (withdrawVal > maxInGoal) {
+                                Text("В копилке всего $maxInGoal монет", color = BrandRoseWarm, fontSize = 11.sp)
+                            } else if (withdrawInput.isNotEmpty() && withdrawVal <= 0) {
+                                Text("Введите сумму больше 0", color = BrandRoseWarm, fontSize = 11.sp)
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    // Быстрый выбор сумм
+                    Text("Быстрый выбор:", fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = TextPrimary)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .horizontalScroll(rememberScrollState()),
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        listOf(5, 10, 15, 25, 50).filter { it <= maxInGoal }.forEach { preset ->
+                            SuggestionChip(
+                                onClick = { withdrawInput = preset.toString() },
+                                label = { Text("$preset 🪙", fontSize = 11.sp) },
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                        }
+                        if (maxInGoal > 0) {
+                            SuggestionChip(
+                                onClick = { withdrawInput = maxInGoal.toString() },
+                                label = { Text("Всё ($maxInGoal)", fontSize = 11.sp, fontWeight = FontWeight.Bold) },
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        if (isValid) {
+                            onRequestWithdraw(withdrawVal)
+                            showWithdrawDialog = false
+                        }
+                    },
+                    enabled = isValid,
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = BrandRoseWarm,
+                        contentColor = Color.White
+                    ),
+                    modifier = Modifier.height(44.dp).bounceClick()
+                ) {
+                    Text(
+                        text = if (withdrawVal > 0) "Снять $withdrawVal 🪙" else "Снять",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 13.sp,
+                        color = Color.White
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showWithdrawDialog = false }, modifier = Modifier.height(44.dp)) {
+                    Text("Отмена", color = TextSecondary, fontSize = 13.sp)
                 }
             }
         )

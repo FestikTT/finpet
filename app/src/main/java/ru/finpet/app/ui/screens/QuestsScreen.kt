@@ -270,6 +270,64 @@ fun QuestsScreen(
                         }
                         Spacer(modifier = Modifier.width(16.dp))
                     }
+
+                    // Плашка энергии питомца для прохождения квестов
+                    val petEnergy = state.pet.energy.coerceIn(0f, 1f)
+                    val petEnergyPercent = (petEnergy * 100).toInt()
+                    val energyColor = when {
+                        petEnergy >= 0.6f -> StatGreenEmerald
+                        petEnergy >= 0.3f -> Color(0xFFF59E0B)
+                        else -> DangerRedColor
+                    }
+
+                    Surface(
+                        shape = RoundedCornerShape(12.dp),
+                        color = energyColor.copy(alpha = 0.08f),
+                        border = BorderStroke(1.dp, energyColor.copy(alpha = 0.25f)),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 10.dp, vertical = 6.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Text("⚡", fontSize = 16.sp)
+                            Column(modifier = Modifier.weight(1f)) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = "Энергия питомца",
+                                        fontFamily = UnboundedFamily,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 10.5.sp,
+                                        color = TextPrimary
+                                    )
+                                    Text(
+                                        text = "$petEnergyPercent%",
+                                        fontFamily = UnboundedFamily,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 11.sp,
+                                        color = energyColor
+                                    )
+                                }
+                                Spacer(modifier = Modifier.height(3.dp))
+                                LinearProgressIndicator(
+                                    progress = { petEnergy },
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(6.dp)
+                                        .clip(RoundedCornerShape(3.dp)),
+                                    color = energyColor,
+                                    trackColor = OutlineLight.copy(alpha = 0.4f)
+                                )
+                            }
+                        }
+                    }
                 }
 
                 // =========================================================

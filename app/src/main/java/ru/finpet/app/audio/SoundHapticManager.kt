@@ -67,6 +67,10 @@ object SoundHapticManager {
                 }
                 val track = ambientTrack ?: return@thread
                 track.setVolume(0.40f)
+                try {
+                    track.stop()
+                    track.reloadStaticData()
+                } catch (_: Exception) {}
                 track.setLoopPoints(0, track.bufferSizeInFrames, -1)
                 track.play()
                 isAmbientPlaying = true

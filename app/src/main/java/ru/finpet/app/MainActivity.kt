@@ -558,7 +558,8 @@ class MainActivity : ComponentActivity() {
                                         onUpdatePlan = { needs, wants, savings ->
                                              GameRepository.updateBudgetPlan(needs, wants, savings)
                                         },
-                                        onConfirmPlan = { GameRepository.confirmBudgetPlan() }
+                                        onConfirmPlan = { GameRepository.confirmBudgetPlan() },
+                                        onAdvancePeriod = { GameRepository.advanceToNextPeriod() }
                                     )
                                     NavScreen.QUESTS -> QuestsScreen(
                                         state = state,
@@ -783,5 +784,17 @@ class MainActivity : ComponentActivity() {
             } // Provider
             } // FinPetTheme
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (GameRepository.gameState.value.isMusicEnabled) {
+            SoundHapticManager.startAmbientMusic()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        SoundHapticManager.stopAmbientMusic()
     }
 }

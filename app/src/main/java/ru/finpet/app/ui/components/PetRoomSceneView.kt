@@ -108,9 +108,9 @@ fun PetRoomSceneView(
                     }
 
                     // 2. Проверка клика по настольной лампе (включение/выключение света)
-                    val tableX = leftWallX * 0.22f
-                    val tableW = (leftWallX * 0.70f).coerceIn(42f, 75f)
-                    val tableY = floorBackY + (floorFrontY - floorBackY) * 0.16f
+                    val tableX = leftWallX * 0.78f
+                    val tableW = (leftWallX * 0.75f).coerceIn(44f, 80f)
+                    val tableY = floorBackY + (floorFrontY - floorBackY) * 0.18f
                     val tableDepth = tableW * 0.38f
                     val lampX = tableX + tableW * 0.5f + 3f
                     val lampBaseY = tableY + tableDepth * 0.18f
@@ -306,9 +306,9 @@ fun PetRoomSceneView(
                 drawRect(Color(0x9E0B1120))
 
                 // Мягкое янтарное свечение вокруг настольной лампы-ночника
-                val tableX = leftWallX * 0.22f
-                val tableW = (leftWallX * 0.70f).coerceIn(42f, 75f)
-                val tableY = floorBackY + (floorFrontY - floorBackY) * 0.16f
+                val tableX = leftWallX * 0.78f
+                val tableW = (leftWallX * 0.75f).coerceIn(44f, 80f)
+                val tableY = floorBackY + (floorFrontY - floorBackY) * 0.18f
                 val tableDepth = tableW * 0.38f
                 val lampX = tableX + tableW * 0.5f + 3f
                 val lampBaseY = tableY + tableDepth * 0.18f
@@ -417,32 +417,125 @@ private fun DrawScope.drawBackWall(
         "sh_wp_brick" -> {
             val rowH = 16f
             var y = topY
+            var rowIdx = 0
             while (y < bottomY) {
-                drawLine(Color(0x33000000), Offset(leftX, y), Offset(rightX, y), strokeWidth = 1.5f)
+                drawLine(Color(0x38000000), Offset(leftX, y), Offset(rightX, y), strokeWidth = 1.5f)
+                val brickW = 28f
+                val shift = if (rowIdx % 2 == 0) 0f else brickW * 0.5f
+                var bx = leftX + shift
+                while (bx < rightX) {
+                    drawLine(Color(0x28000000), Offset(bx, y), Offset(bx, y + rowH), strokeWidth = 1.2f)
+                    bx += brickW
+                }
                 y += rowH
+                rowIdx++
             }
         }
         "sh_wp_space" -> {
-            drawCircle(Color.White.copy(alpha = 0.85f), 2.2f, Offset(leftX + wallW * 0.15f, topY + wallH * 0.25f))
-            drawCircle(Color.White.copy(alpha = 0.9f), 2.8f, Offset(leftX + wallW * 0.85f, topY + wallH * 0.18f))
+            // Звезды разного размера и сияние туманности
+            drawCircle(Color(0x40A855F7), wallW * 0.35f, Offset(leftX + wallW * 0.4f, topY + wallH * 0.5f))
+            drawCircle(Color.White.copy(alpha = 0.9f), 2.8f, Offset(leftX + wallW * 0.15f, topY + wallH * 0.25f))
+            drawCircle(Color(0xFFFDE047).copy(alpha = 0.9f), 3.2f, Offset(leftX + wallW * 0.85f, topY + wallH * 0.18f))
             drawCircle(Color.White.copy(alpha = 0.65f), 1.8f, Offset(leftX + wallW * 0.40f, topY + wallH * 0.15f))
-            drawCircle(Color.White.copy(alpha = 0.75f), 2.2f, Offset(leftX + wallW * 0.70f, topY + wallH * 0.35f))
+            drawCircle(Color(0xFF67E8F9).copy(alpha = 0.85f), 2.4f, Offset(leftX + wallW * 0.70f, topY + wallH * 0.35f))
+            drawCircle(Color.White.copy(alpha = 0.75f), 1.5f, Offset(leftX + wallW * 0.25f, topY + wallH * 0.60f))
         }
         "sh_wp_cyber" -> {
+            // Кибернетическая матрица с неоновыми дорожками
             var gx = leftX
             while (gx < rightX) {
                 drawLine(Color(0x2500D2FF), Offset(gx, topY), Offset(gx, bottomY), 1.5f)
                 gx += 24f
             }
+            var gy = topY + 12f
+            while (gy < bottomY) {
+                drawLine(Color(0x1800D2FF), Offset(leftX, gy), Offset(rightX, gy), 1f)
+                gy += 20f
+            }
+            drawCircle(Color(0xFF00E5FF), 3f, Offset(leftX + wallW * 0.35f, topY + wallH * 0.4f))
+            drawCircle(Color(0xFFFF007F), 3f, Offset(leftX + wallW * 0.65f, topY + wallH * 0.3f))
         }
         "sh_wp_sakura" -> {
-            drawCircle(Color(0xFFFFB6C1), 3.5f, Offset(leftX + wallW * 0.18f, topY + wallH * 0.3f))
-            drawCircle(Color(0xFFFFC0CB), 2.8f, Offset(leftX + wallW * 0.80f, topY + wallH * 0.22f))
-            drawCircle(Color(0xFFFFB6C1), 3.2f, Offset(leftX + wallW * 0.42f, topY + wallH * 0.5f))
+            // Ветки сакуры и нежные лепестки
+            drawLine(Color(0xFF5D4037), Offset(leftX, topY + wallH * 0.25f), Offset(leftX + wallW * 0.3f, topY + wallH * 0.18f), strokeWidth = 2.5f, cap = StrokeCap.Round)
+            drawLine(Color(0xFF5D4037), Offset(rightX, topY + wallH * 0.22f), Offset(rightX - wallW * 0.35f, topY + wallH * 0.32f), strokeWidth = 2.5f, cap = StrokeCap.Round)
+            drawCircle(Color(0xFFFFB6C1), 4.5f, Offset(leftX + wallW * 0.18f, topY + wallH * 0.20f))
+            drawCircle(Color(0xFFFFC0CB), 3.5f, Offset(leftX + wallW * 0.28f, topY + wallH * 0.16f))
+            drawCircle(Color(0xFFFFB6C1), 4.2f, Offset(rightX - wallW * 0.22f, topY + wallH * 0.28f))
+            drawCircle(Color(0xFFF472B6), 3.2f, Offset(rightX - wallW * 0.14f, topY + wallH * 0.22f))
+            drawCircle(Color(0xFFFFE4E6), 2.5f, Offset(leftX + wallW * 0.45f, topY + wallH * 0.45f))
         }
         "sh_wp_forest" -> {
-            drawCircle(Color(0xFFFDE047).copy(alpha = 0.85f), 2.5f, Offset(leftX + wallW * 0.2f, topY + wallH * 0.35f))
-            drawCircle(Color(0xFFFDE047).copy(alpha = 0.75f), 2f, Offset(leftX + wallW * 0.82f, topY + wallH * 0.45f))
+            // Силуэты хвойных деревьев и светлячки
+            drawCircle(Color(0xFF064E3B), wallW * 0.15f, Offset(leftX + wallW * 0.18f, bottomY))
+            drawCircle(Color(0xFF065F46), wallW * 0.18f, Offset(leftX + wallW * 0.82f, bottomY))
+            drawCircle(Color(0xFFFDE047).copy(alpha = 0.9f), 2.5f, Offset(leftX + wallW * 0.25f, topY + wallH * 0.35f))
+            drawCircle(Color(0xFFFDE047).copy(alpha = 0.8f), 2f, Offset(leftX + wallW * 0.75f, topY + wallH * 0.45f))
+            drawCircle(Color(0xFFFDE047).copy(alpha = 0.7f), 2f, Offset(leftX + wallW * 0.50f, topY + wallH * 0.25f))
+        }
+        "sh_wp_city" -> {
+            // Ночной мегаполис: силуэты небоскребов и светящиеся окна
+            val b1 = leftX + wallW * 0.10f
+            drawRect(Color(0xFF1E1B4B), Offset(b1, bottomY - wallH * 0.45f), Size(wallW * 0.18f, wallH * 0.45f))
+            drawRect(Color(0xFFFACC15), Offset(b1 + 6f, bottomY - wallH * 0.38f), Size(5f, 7f))
+            drawRect(Color(0xFF38BDF8), Offset(b1 + 16f, bottomY - wallH * 0.38f), Size(5f, 7f))
+            drawRect(Color(0xFFFACC15), Offset(b1 + 6f, bottomY - wallH * 0.24f), Size(5f, 7f))
+
+            val b2 = leftX + wallW * 0.32f
+            drawRect(Color(0xFF17153B), Offset(b2, bottomY - wallH * 0.60f), Size(wallW * 0.22f, wallH * 0.60f))
+            drawRect(Color(0xFFFACC15), Offset(b2 + 8f, bottomY - wallH * 0.52f), Size(6f, 8f))
+            drawRect(Color(0xFFFACC15), Offset(b2 + 20f, bottomY - wallH * 0.52f), Size(6f, 8f))
+            drawRect(Color(0xFF38BDF8), Offset(b2 + 8f, bottomY - wallH * 0.38f), Size(6f, 8f))
+            drawRect(Color(0xFFFACC15), Offset(b2 + 20f, bottomY - wallH * 0.24f), Size(6f, 8f))
+
+            val b3 = leftX + wallW * 0.72f
+            drawRect(Color(0xFF1E1B4B), Offset(b3, bottomY - wallH * 0.50f), Size(wallW * 0.20f, wallH * 0.50f))
+            drawRect(Color(0xFF38BDF8), Offset(b3 + 7f, bottomY - wallH * 0.42f), Size(5f, 7f))
+            drawRect(Color(0xFFFACC15), Offset(b3 + 17f, bottomY - wallH * 0.42f), Size(5f, 7f))
+            drawRect(Color(0xFFFACC15), Offset(b3 + 7f, bottomY - wallH * 0.26f), Size(5f, 7f))
+        }
+        "sh_wp_retro" -> {
+            // Ретро-вейв: синтвейв закатное неоновое солнце и полосы
+            val sunRadius = wallW * 0.16f
+            val sunCenter = Offset(leftX + wallW * 0.50f, bottomY - wallH * 0.15f)
+            drawCircle(
+                brush = Brush.verticalGradient(
+                    listOf(Color(0xFFFACC15), Color(0xFFF43F5E), Color(0xFF8B5CF6)),
+                    startY = sunCenter.y - sunRadius,
+                    endY = sunCenter.y + sunRadius
+                ),
+                radius = sunRadius,
+                center = sunCenter
+            )
+            // Горизонтальные ретро-прорези в солнце
+            for (i in 0..4) {
+                val lineY = sunCenter.y - sunRadius * 0.2f + (i * 7f)
+                drawLine(Color(0xFF28256A), Offset(sunCenter.x - sunRadius, lineY), Offset(sunCenter.x + sunRadius, lineY), strokeWidth = 2.5f)
+            }
+        }
+        "sh_wp_clouds" -> {
+            // Нежные пастельные пушистые облака
+            val cloudColor = Color.White.copy(alpha = 0.85f)
+            // Облако 1
+            drawCircle(cloudColor, 12f, Offset(leftX + wallW * 0.25f, topY + wallH * 0.22f))
+            drawCircle(cloudColor, 16f, Offset(leftX + wallW * 0.30f, topY + wallH * 0.20f))
+            drawCircle(cloudColor, 11f, Offset(leftX + wallW * 0.35f, topY + wallH * 0.22f))
+            // Облако 2
+            drawCircle(cloudColor, 14f, Offset(leftX + wallW * 0.72f, topY + wallH * 0.30f))
+            drawCircle(cloudColor, 18f, Offset(leftX + wallW * 0.78f, topY + wallH * 0.27f))
+            drawCircle(cloudColor, 12f, Offset(leftX + wallW * 0.84f, topY + wallH * 0.30f))
+        }
+        "sh_wp_sunflower" -> {
+            // Яркие цветы подсолнухов с коричневой сердцевиной
+            val f1 = Offset(leftX + wallW * 0.22f, topY + wallH * 0.35f)
+            drawCircle(Color(0xFFFACC15), 14f, f1)
+            drawCircle(Color(0xFF78350F), 7f, f1)
+            val f2 = Offset(leftX + wallW * 0.78f, topY + wallH * 0.25f)
+            drawCircle(Color(0xFFFACC15), 16f, f2)
+            drawCircle(Color(0xFF78350F), 8f, f2)
+            val f3 = Offset(leftX + wallW * 0.50f, topY + wallH * 0.52f)
+            drawCircle(Color(0xFFFBBF24), 12f, f3)
+            drawCircle(Color(0xFF78350F), 6f, f3)
         }
         else -> {}
     }
@@ -615,18 +708,80 @@ private fun DrawScope.drawFloor(
         )
     )
 
-    // Перспективные доски пола
-    val plankCount = 8
+    // Уникальная текстура пола в зависимости от выбранного покрытия
     val backW = rightWallX - leftWallX
-    for (i in 0..plankCount) {
-        val topX = leftWallX + (backW / plankCount) * i
-        val bottomX = (w / plankCount) * i
-        drawLine(
-            color = Color(0x24000000),
-            start = Offset(topX, floorBackY),
-            end = Offset(bottomX, h),
-            strokeWidth = 1.6f
-        )
+    when (state.equippedFloor) {
+        "sh_fl_tatami" -> {
+            // Японские татами с темно-зеленой каймой из ткани
+            val matCols = 4
+            for (i in 0..matCols) {
+                val topX = leftWallX + (backW / matCols) * i
+                val bottomX = (w / matCols) * i
+                drawLine(Color(0xFF285A35), Offset(topX, floorBackY), Offset(bottomX, h), strokeWidth = 3f)
+            }
+            // Горизонтальные швы татами
+            val seams = 3
+            for (j in 1..seams) {
+                val t = j.toFloat() / (seams + 1)
+                val sy = floorBackY + (h - floorBackY) * t
+                val sx1 = leftWallX * (1f - t)
+                val sx2 = rightWallX + (w - rightWallX) * t
+                drawLine(Color(0xFF285A35), Offset(sx1, sy), Offset(sx2, sy), strokeWidth = 2.5f)
+            }
+        }
+        "sh_fl_marble" -> {
+            // Мраморная плитка с благородными прожилками
+            val tileCount = 5
+            for (i in 0..tileCount) {
+                val topX = leftWallX + (backW / tileCount) * i
+                val bottomX = (w / tileCount) * i
+                drawLine(Color(0x4094A3B8), Offset(topX, floorBackY), Offset(bottomX, h), strokeWidth = 1.2f)
+            }
+            // Мраморные прожилки
+            drawLine(Color(0x2864748B), Offset(w * 0.25f, floorBackY + 20f), Offset(w * 0.35f, h * 0.8f), strokeWidth = 1.5f, cap = StrokeCap.Round)
+            drawLine(Color(0x20D4AF37), Offset(w * 0.65f, floorBackY + 15f), Offset(w * 0.80f, h * 0.75f), strokeWidth = 1.2f, cap = StrokeCap.Round)
+        }
+        "sh_fl_neon" -> {
+            // Неоновая киберпанк сетка с неоновым свечением
+            val gridCols = 6
+            for (i in 0..gridCols) {
+                val topX = leftWallX + (backW / gridCols) * i
+                val bottomX = (w / gridCols) * i
+                drawLine(Color(0x7500E5FF), Offset(topX, floorBackY), Offset(bottomX, h), strokeWidth = 1.8f)
+            }
+            val gridRows = 4
+            for (j in 1..gridRows) {
+                val t = j.toFloat() / (gridRows + 1)
+                val sy = floorBackY + (h - floorBackY) * t
+                val sx1 = leftWallX * (1f - t)
+                val sx2 = rightWallX + (w - rightWallX) * t
+                drawLine(Color(0x6000E5FF), Offset(sx1, sy), Offset(sx2, sy), strokeWidth = 1.5f)
+                // Неоновые светящиеся узлы
+                drawCircle(Color(0xFFFF007F), 2.5f, Offset((sx1 + sx2) * 0.5f, sy))
+            }
+        }
+        "sh_fl_carpet" -> {
+            // Мягкое пушистое ковровое покрытие
+            for (stepX in 1..6) {
+                val topX = leftWallX + (backW / 7f) * stepX
+                val bottomX = (w / 7f) * stepX
+                drawLine(Color(0x20F43F5E), Offset(topX, floorBackY), Offset(bottomX, h), strokeWidth = 1f)
+            }
+        }
+        else -> {
+            // Классический паркет / деревянные доски
+            val plankCount = 8
+            for (i in 0..plankCount) {
+                val topX = leftWallX + (backW / plankCount) * i
+                val bottomX = (w / plankCount) * i
+                drawLine(
+                    color = Color(0x30000000),
+                    start = Offset(topX, floorBackY),
+                    end = Offset(bottomX, h),
+                    strokeWidth = 1.6f
+                )
+            }
+        }
     }
 
     // Изометрический коврик по центру под питомцем (сдвинут вниз, чтобы питомец сидел четко по центру коврика)
@@ -1078,10 +1233,10 @@ private fun DrawScope.drawCozyFurniture(
     drawCircle(Color(0xFF34D399), 2.5f, Offset(potX - 2.5f, shelfY - 13f))
     drawCircle(Color(0xFF059669), 2.5f, Offset(potX + 2.5f, shelfY - 13f))
 
-    // 3. Скандинавская деревянная тумбочка у левой стены
-    val tableX = leftWallX * 0.22f
-    val tableY = floorBackY + (floorFrontY - floorBackY) * 0.16f
-    val tableW = (leftWallX * 0.70f).coerceIn(42f, 75f)
+    // 3. Скандинавская деревянная тумбочка у левой стены (смещена правее для гармоничной композиции)
+    val tableX = leftWallX * 0.78f
+    val tableY = floorBackY + (floorFrontY - floorBackY) * 0.18f
+    val tableW = (leftWallX * 0.75f).coerceIn(44f, 80f)
     val tableH = tableW * 0.88f
     val tableDepth = tableW * 0.38f
 
